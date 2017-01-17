@@ -34,8 +34,9 @@ cat(sep="", "sum of elements of x is ", answer.1, "\n")
 # Write code to generate two random numbers from N(0, 1) and report
 # their sum.
 
-# ... your code here, if you wish ...
+rand_var <- rnorm(2, 0, 1)
+sum_rand <- sum(rand_var)
 
-answer.2 = 0 # ... set this variable correctly
+answer.2 = print(sum_rand) # ... set this variable correctly
 
 cat(sep="", "sum of two random N(0, 1) numbers is ", answer.2, "\n")
