@@ -29,3 +29,14 @@ pnorm(11.8, 12, 6, lower.tail = TRUE)
 #Q9
 qnorm(0.3, 12, 6, lower.tail = TRUE)
 
+#Q10
+pt(-0.2, 12, lower.tail = FALSE)
+
+#Q11
+qt(.04, 12, lower.tail = FALSE)
+
+#Q12
+dbinom(12, 25, .54)
+
+#Q13
+pbinom(12, 25, .54, lower.tail = TRUE)
