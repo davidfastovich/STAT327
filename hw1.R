@@ -24,8 +24,9 @@ x = c(5, 7)
 # Find the sum of the elements of the vector x.
 
 sumx <- sum(x)
+print(sumx)
 
-answer.1 = print(sumx) # ... set this variable correctly (please don't use "5+7"
+answer.1 = sumx # ... set this variable correctly (please don't use "5+7"
 # or "12": use more general code that will work even if x
 # were changed)
 
@@ -36,7 +37,8 @@ cat(sep="", "sum of elements of x is ", answer.1, "\n")
 
 rand_var <- rnorm(2, 0, 1)
 sum_rand <- sum(rand_var)
+print(sum_rand)
 
-answer.2 = print(sum_rand) # ... set this variable correctly
+answer.2 = sum_rand # ... set this variable correctly
 
 cat(sep="", "sum of two random N(0, 1) numbers is ", answer.2, "\n")
