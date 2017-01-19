@@ -40,3 +40,8 @@ index.2 <- which(c(v < 12) | (v > 20))
 sum(v[index.2])
 
 #q17
+sum(v[(v %% 2) == 0])
+
+#q18
+index.3 <- seq(from = 0, to = 29, by = 5)
+sum(v[index.3])
