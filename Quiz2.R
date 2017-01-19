@@ -9,3 +9,34 @@ sum(v < 10)
 
 #q3
 mean(v)
+
+#q4
+sd(v)
+
+#q5
+median(v)
+
+#q6
+min(v)
+
+#q7
+mean(c(v[1], v[29]))
+
+#q12
+sum(v[12:20])
+
+#q13
+sum(v[v < 12])
+
+#q14
+index <- which(c(v >= 12) & (v <= 20))
+sum(v[index])
+
+#q15
+sum(index)
+
+#q16
+index.2 <- which(c(v < 12) | (v > 20))
+sum(v[index.2])
+
+#q17
