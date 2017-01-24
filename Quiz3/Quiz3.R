@@ -17,7 +17,7 @@ sum(sort.v[1:3])
 
 #5
 quint.v <- quantile(v, seq(0, 1, 1/5))
-sum(quint.v)
+sum(quint.v[2:5])
 
 #6
 ham <- scan(file = "Hamlet.txt", what = character())
