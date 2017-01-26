@@ -49,29 +49,29 @@ cat(sep="", "NY.sum.small=", NY.sum.small, "\n")
 # donations" are those such that
 #   donation < -100 or donation > 100.
 
-WI.sum.big = sum(wi[wi > small & wi < -small]) # ... set this variable correctly
-NY.sum.big = sum(ny[ny > small & ny < -small]) # ... set this variable correctly
+WI.sum.big = sum(wi[wi > small | wi < -small]) # ... set this variable correctly
+NY.sum.big = sum(ny[ny > small | ny < -small]) # ... set this variable correctly
 cat(sep="", "WI.sum.big=", WI.sum.big, "\n")
 cat(sep="", "NY.sum.big=", NY.sum.big, "\n")
 
 # Find the ratio of the sum of small donations to total donations from
 # each state.
-WI.small.ratio = 0 # ... set this variable correctly
-NY.small.ratio = 0 # ... set this variable correctly
+WI.small.ratio = WI.sum.small/WI.sum # ... set this variable correctly
+NY.small.ratio = NY.sum.small/NY.sum # ... set this variable correctly
 cat(sep="", "WI.small.ratio=", WI.small.ratio, "\n")
 cat(sep="", "NY.small.ratio=", NY.small.ratio, "\n")
 
 # Find the mean positive donation from each state. (Do not include
 # zero or negative donations.)
-WI.mean.pos = 0 # ... set this variable correctly
-NY.mean.pos = 0 # ... set this variable correctly
+WI.mean.pos = mean(wi[wi > 0]) # ... set this variable correctly
+NY.mean.pos = mean(ny[ny > 0]) # ... set this variable correctly
 cat(sep="", "WI.mean.pos=", WI.mean.pos, "\n")
 cat(sep="", "NY.mean.pos=", NY.mean.pos, "\n")
 
 # Find the median positive donation from each state. (Do not include
 # zero or negative donations.)
-WI.median.pos = 0 # ... set this variable correctly
-NY.median.pos = 0 # ... set this variable correctly
+WI.median.pos = median(wi[wi > 0]) # ... set this variable correctly
+NY.median.pos = median(ny[ny > 0]) # ... set this variable correctly
 cat(sep="", "WI.median.pos=", WI.median.pos, "\n")
 cat(sep="", "NY.median.pos=", NY.median.pos, "\n")
 
