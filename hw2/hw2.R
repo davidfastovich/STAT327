@@ -40,8 +40,8 @@ cat(sep="", "NY sum=", NY.sum, "\n")
 # (Note that there are negative donations, which are refunds.)
 
 small = 100
-WI.sum.small = sum(wi[wi < small & wi > -small]) # ... set this variable correctly
-NY.sum.small = sum(ny[ny < small & ny > -small]) # ... set this variable correctly
+WI.sum.small = sum(wi[wi <= small & wi >= -small]) # ... set this variable correctly
+NY.sum.small = sum(ny[ny <= small & ny >= -small]) # ... set this variable correctly
 cat(sep="", "WI.sum.small=", WI.sum.small, "\n")
 cat(sep="", "NY.sum.small=", NY.sum.small, "\n")
 
@@ -82,7 +82,14 @@ cat(sep="", "NY.median.pos=", NY.median.pos, "\n")
 # WI.largest=0, WI.second.largest=0
 # NY.largest=0, NY.second.largest=0
 
-# ...
+wi.order <- order(wi, decreasing = TRUE)
+ny.order <- order(ny, decreasing = TRUE)
+WI.largest = max(wi)
+WI.second.largest = wi[wi.order[2]]
+NY.largest = max(ny)
+NY.second.largest = ny[ny.order[2]]
+cat(sep="", "WI.largest=", WI.largest, ", WI.second.largest=" , WI.second.largest, "\n",
+    "NY.largest=", NY.largest, ", NY.second.largest=", NY.second.largest)
 
 # Note that your code should work on the current data set, and also on
 # a new data set. For example, if I ask for a sum, don't use "17",
