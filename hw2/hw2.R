@@ -11,8 +11,8 @@
 #   source("hw2.R")
 # (in a directory containing the data files) and reading your code.
 
-# Name: ...
-# Email: ...
+# Name: David Fastovich
+# Email: fastovich@wisc.edu
 
 rm(list = ls()) # Remove all objects defined in workspace.
 
@@ -24,12 +24,13 @@ rm(list = ls()) # Remove all objects defined in workspace.
 #
 # Read these two files into two vectors, one for each state.
 
-# ...
+wi <- scan("WI_donations.txt", numeric())
+ny <- scan("NY_donations.txt", numeric())
 
 # Find the sum of donations from WI and the sum of donations from NY.
 
-WI.sum = 0 # ... set this variable correctly
-NY.sum = 0 # ... set this variable correctly
+WI.sum = sum(wi) # ... set this variable correctly
+NY.sum = sum(ny) # ... set this variable correctly
 cat(sep="", "WI sum=", WI.sum, "\n")
 cat(sep="", "NY sum=", NY.sum, "\n")
 
@@ -39,8 +40,8 @@ cat(sep="", "NY sum=", NY.sum, "\n")
 # (Note that there are negative donations, which are refunds.)
 
 small = 100
-WI.sum.small = 0 # ... set this variable correctly
-NY.sum.small = 0 # ... set this variable correctly
+WI.sum.small = sum(wi[wi < small & wi > -small]) # ... set this variable correctly
+NY.sum.small = sum(ny[ny < small & ny > -small]) # ... set this variable correctly
 cat(sep="", "WI.sum.small=", WI.sum.small, "\n")
 cat(sep="", "NY.sum.small=", NY.sum.small, "\n")
 
@@ -48,8 +49,8 @@ cat(sep="", "NY.sum.small=", NY.sum.small, "\n")
 # donations" are those such that
 #   donation < -100 or donation > 100.
 
-WI.sum.big = 0 # ... set this variable correctly
-NY.sum.big = 0 # ... set this variable correctly
+WI.sum.big = sum(wi[wi > small & wi < -small]) # ... set this variable correctly
+NY.sum.big = sum(ny[ny > small & ny < -small]) # ... set this variable correctly
 cat(sep="", "WI.sum.big=", WI.sum.big, "\n")
 cat(sep="", "NY.sum.big=", NY.sum.big, "\n")
 
