@@ -29,9 +29,10 @@ sorted[3,]
 #8
 test$neg.weight <- test$weight*(-1)
 sorted <- test[order(test$eye.color, test$neg.weight, decreasing = TRUE), ]
+sorted
 
 #9
-summary(CO2)
+mean(CO2$uptake)
 
 #10
 mean(CO2$uptake[CO2$Type == "Quebec"])
@@ -44,3 +45,7 @@ mean(CO2$uptake[CO2$Type == "Mississippi"])
 
 #13
 sd(CO2$uptake[CO2$Type == "Mississippi"])
+
+#14
+boxplot(CO2)
+boxplot(CO2$uptake ~ CO2$Type)
