@@ -140,6 +140,7 @@ Look into the highest-crime neighborhood by making a single graph of one column 
 
 ```{r}
 bos[which.max(bos$crim), ]
+par(mfrow = c(3,1))
 plot(density(bos$crim), main = "Density of per capita Crime Rate per Town")
 rug(bos$crim)
 points(bos$crim[381], 0, col = "red", pch = 19)
