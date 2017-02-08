@@ -143,13 +143,13 @@ bos[which.max(bos$crim), ]
 par(mfrow = c(3,1))
 plot(density(bos$crim), main = "Density of per capita Crime Rate per Town")
 rug(bos$crim)
-points(bos$crim[381], 0, col = "red", pch = 19)
+points(bos$crim[which.max(bos$crim)], 0, col = "red", pch = 19)
 plot(density(bos$medv), main = "Density of Medial Home Value")
 rug(bos$medv)
-points(bos$medv[381], 0, col = "red", pch = 19)
+points(bos$medv[which.max(bos$crim)], 0, col = "red", pch = 19)
 plot(density(bos$ptratio), main = "Density of Pupil-Teacher Ratio")
 rug(bos$ptratio)
-points(bos$ptratio[381], 0, col = "red", pch = 19)
+points(bos$ptratio[which.max(bos$crim)], 0, col = "red", pch = 19)
 ```
 
 What do you notice about the ptratio and medv for the highest-crime neighborhood?
