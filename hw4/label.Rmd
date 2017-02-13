@@ -1,0 +1,47 @@
+## Using plotmath for graph labels.
+
+(Here's the ".Rmd" file that produced what you're reading: [label.Rmd](label.Rmd).)
+
+Here are several plots with successively harder labels using text, the value of a variable, and `plotmath` notation.
+
+### First, an easy text title:
+```{r}
+curve(sqrt(x), from=0, to=4, main="Ugly plain text: y = sqrt(x)")
+```
+
+### Second, an easy title using `plotmath` and `expression`, but no text:
+```{r}
+curve(sqrt(x), from=0, to=4, main=expression(sqrt(x)))
+```
+
+### Third, combine `plotmath` and text:
+
+* In the context of "`expression()`", the asterisk, "`*`", indicates joining
+```{r}
+curve(sqrt(x), from=0, to=4, main=expression("The square root of n: " * sqrt(n)))
+```
+
+### Fourth, combine text and the value of a variable:
+```{r}
+n = 2
+curve(sqrt(x), from=0, to=4, main=paste(sep="", "The square root of ", n, " is ", sqrt(n)))
+```
+
+### Fifth, combine plotmath and the value of a variable:
+
+* In `plotmath`, `sqrt(2)` indicates $\sqrt{2}$
+* `bquote()` is like `expression()` in that it facilitates plotmath, but it also allows the inclusion of the value of a variable:
+    + "`.()`" indicates, in the context of "`bquote()`", that its argument should be evaluated, so
+        - "`.(n)`" indicates the value of the "`n`" variable, that is, 2
+        - "`.(sqrt(n))`" indicates the value of "`sqrt(n)`", that is, 1.414...
+* here "`bquote()`" combines the previous two elements into a title
+```{r}
+n = 2
+curve(sqrt(x), from=0, to=4, main=bquote(sqrt(.(n))==.(sqrt(n))))
+```
+
+### Sixth and finally, combine text, plotmath, and the value of a variable:
+```{r}
+n = 2
+curve(sqrt(x), from=0, to=4, main=bquote("The square root of " * .(n) * " is " * sqrt(.(n))==.(sqrt(n))))
+```
