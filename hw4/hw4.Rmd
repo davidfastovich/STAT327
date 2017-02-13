@@ -115,10 +115,14 @@ layout(1)
     + Add the simple regression line to your scatterplot.
     + Include a reasonable title and axis labels.
 ```{r}
+simple.fit <- lm(PBE ~ CBE, data = beef)
+plot(x = beef$CBE, y = beef$PBE, main = "Price of Beef vs Consumption of Beef", xlab = "Consumption of beef per capita (lbs)", ylab = "Price of beef (cents/lb)")
+abline(simple.fit)
 ```
 
 ### Are the coefficients (y-intercept and slope in the x direction) the same for this second simple linear regression model as they are in the first multiple regression model?
-...
+
+**The intercepts and coefficients are not the same. For the multiple linear regression the intercept is 225.769097483 and the slope of CBE is -1.41560563. However, for the simple linear regression the intercept is 133.619040 and the slope of CBE is -1.216093.**
 
 ## Part 3: Regression model including confidence bands
 
@@ -146,4 +150,21 @@ the true y-intercept $\beta_0 = 2$, the true slope $\beta_1 = 3$, the true $\sig
 
 Hint: These calculations might look hard, but they go quickly with R. See Quiz 2's questions 8-11 for examples of efficiently translating sums into R code.
 ```{r}
+x.coord <- replicate(n = 100, expr = rnorm(1))
+e.i <- replicate(n = 100, expr = rnorm(1, 0, 4))
+y.coord <- (2+(3*x.coord) + e.i)
+fit.sim <- lm(y.coord ~ x.coord)
+plot(x = x.coord, y = y.coord)
+abline(fit.sim)
+abline(2, 3, lty = 2, col = "red")
+preds <- predict(fit.sim, interval = "confidence")
+lines(x.coord, preds[ ,3], lty = 2, col = "blue")
+lines(x.coord, preds[ ,2], lty = 2, col = "blue")
+
+s <- sqrt((sum(fit.sim$residuals^2)/(100-2)))
+s.yhat <- s*(sqrt((1/100) + ((x.coord - mean(x.coord))^2)/sum((x.coord - mean(x.coord))^2)))
+t.value <- qt(.025, 98, lower.tail = FALSE)
+conf.yhat <- (fit.sim$fitted.values + (t.value*s.yhat))
+
+summary(fit.sim)
 ```
