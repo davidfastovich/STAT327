@@ -79,7 +79,7 @@ summary(beef)
 
 ### A first step after reading a data set into an R data frame is to check whether the categorical variables are encoded as factors. Does the beef data set have any categorical variables that should be encoded as factors?
 
-**Year should be a categorical variable.**
+**The beef datasest does not have any categorical variables**
 
 ### Multiple regression
 * Make a multiple linear regression model for PBE (price of beef) depending on the other variables.
@@ -91,12 +91,12 @@ summary(beef)
     + Include the $x$-axis label $\hat{y}_i$ (search ?plotmath for how to get the hat on the $y$)
 * Make a single plot consisting of nine residual plots in a 3x3 arrangement. Each of these nine should have points of the form $(x_{ji}, e_i)$, where $x_{ji}$ is the $i^{\text{th}}$ observation of the $j^{\text{th}}$ independent variable. All variables other than PBE are independent variables here. None of these plots requires a main title, but each should have a $y$-axis label "$e_i$" and an $x$-axis label consisting of the independent variable's name.
 ```{r}
-fit <- lm(PBE ~ CBE + PPO + CPO + PFO + DINC + CFO + RDINC + RFP, data = beef)
+fit <- lm(PBE ~ CBE + PPO + CPO + PFO + DINC + CFO + RDINC + RFP + YEAR, data = beef)
 summary(fit)
 plot(x = fit$fitted.values, y = fit$residuals, main = "Beef: residual plot", ylab = expression(e[i]), xlab = expression(hat(y[i])))
 m <- matrix(data = c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3, nrow = 3)
 layout(m)
-plot(x = beef$PBE, y = fit$residuals, ylab = expression(e[i]), xlab = "PBE")
+plot(x = beef$YEAR, y = fit$residuals, ylab = expression(e[i]), xlab = "YEAR")
 plot(x = beef$CBE, y = fit$residuals, ylab = expression(e[i]), xlab = "CBE")
 plot(x = beef$PPO, y = fit$residuals, ylab = expression(e[i]), xlab = "PPO")
 plot(x = beef$CPO, y = fit$residuals, ylab = expression(e[i]), xlab = "CPO")
