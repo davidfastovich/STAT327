@@ -87,7 +87,8 @@ stopifnot(is.null(letter.grade( -3))) # "... == NULL" doesn't do the right thing
 # Write a function "discriminant()" that takes three numeric parameters,
 # a, b, and c, and returns b^2 - 4ac.
 discriminant = function(a, b, c) {
-  # ...
+  value <- ((b^2) - (4*a*c))
+  return(value)
 }
 stopifnot(isTRUE(all.equal(discriminant(0, 0,  0), 0)))
 stopifnot(isTRUE(all.equal(discriminant(0, 0,  1), 0)))
