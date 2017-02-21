@@ -116,7 +116,16 @@ stopifnot(isTRUE(all.equal(discriminant(-1, -1,  -1), -3)))
 #
 # Note: Call your discriminant() function to get the discriminant.
 quadratic.formula = function(a, b, c) {
-  # ...
+  if(a == 0) {
+    return(NULL)
+  } else if (discriminant(a , b, c) < 0) {
+    return(numeric())
+  } else {
+    sol1 = (-b+sqrt(discriminant(a, b, c)))/(2*a)
+    sol2 = (-b-sqrt(discriminant(a, b, c)))/(2*a)
+    x <- c(sol1, sol2)
+    return(sort(x))
+  }
 }
 stopifnot(isTRUE(all.equal(quadratic.formula(0, 0,  0), NULL)))
 stopifnot(isTRUE(all.equal(quadratic.formula(1, 0,  1), numeric(0))))
