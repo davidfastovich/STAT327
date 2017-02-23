@@ -119,7 +119,7 @@ quadratic.formula = function(a, b, c) {
   if(a == 0) {
     return(NULL)
   } else if (discriminant(a , b, c) < 0) {
-    return(numeric())
+    return(numeric(0))
   } else {
     sol1 = (-b+sqrt(discriminant(a, b, c)))/(2*a)
     sol2 = (-b-sqrt(discriminant(a, b, c)))/(2*a)
@@ -166,7 +166,22 @@ stopifnot(isTRUE(all.equal(quadratic.formula(1, 1, -6), c(-3, 2))))
 # "must" statements above.)
 #
 baby.prop.test = function (x, n, p, conf.level = 0.95) {
-  # ...
+  stopifnot((x >=  0) | (n >= x))
+  stopifnot(n > 0)
+  stopifnot((p > 0) | (p < 1))
+  stopifnot((conf.level > 0) | (conf.level < 1))
+  alpha = 1 - conf.level
+  p.hat = (x/n)
+  z = ((p.hat - p) / sqrt(p*(1-p)/n))
+  int.low =  p.hat - (qnorm((alpha/2), lower.tail = FALSE) * sqrt((p.hat*(1-p.hat))/n))
+  int.high = p.hat + (qnorm((alpha/2), lower.tail = FALSE) * sqrt((p.hat*(1-p.hat))/n))
+  value = list()
+  value$conf.int = c(int.low, int.high)
+  value$estimate = p.hat
+  value$p.value = pnorm(z, lower.tail = FALSE)*2
+  value$statistic = z
+  value$null.value = p
+  return(value)
 }
 # test case
 baby.prop = baby.prop.test(72, 100, .7, conf.level=.99)
