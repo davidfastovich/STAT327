@@ -166,10 +166,10 @@ stopifnot(isTRUE(all.equal(quadratic.formula(1, 1, -6), c(-3, 2))))
 # "must" statements above.)
 #
 baby.prop.test = function (x, n, p, conf.level = 0.95) {
-  stopifnot((x >=  0) | (n >= x))
+  stopifnot((x >=  0) & (n >= x))
   stopifnot(n > 0)
-  stopifnot((p > 0) | (p < 1))
-  stopifnot((conf.level > 0) | (conf.level < 1))
+  stopifnot((p > 0) & (p < 1))
+  stopifnot((conf.level > 0) & (conf.level < 1))
   alpha = 1 - conf.level
   p.hat = (x/n)
   z = ((p.hat - p) / sqrt(p*(1-p)/n))
