@@ -1,5 +1,5 @@
-# Name: ...
-# Email: ...
+# Name: David Fastovich
+# Email: fastovich@wisc.edu
 
 # We'll grade your homework by running
 #   source("hw1.R")
