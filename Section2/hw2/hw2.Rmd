@@ -165,11 +165,6 @@ monte.carlo.pi = function(n, draw=FALSE) {
   }
   pi = 4*(count/n)
   return(pi)
-  if (draw == TRUE) {
-    plot(x, y)
-  } else {
-    NULL
-  }
 }
 cat(sep="", "monte.carlo.pi(1000)=", monte.carlo.pi(1000), "\n") # get estimate
 monte.carlo.pi(1000, TRUE) # make graph
