@@ -163,8 +163,7 @@ monte.carlo.pi = function(n, draw=FALSE) {
       count = count + 0
     }
   }
-  pi = 4*(count/n)
-  return(pi)
+  return(pi = 4*(count/n))
 }
 cat(sep="", "monte.carlo.pi(1000)=", monte.carlo.pi(1000), "\n") # get estimate
 monte.carlo.pi(1000, TRUE) # make graph
