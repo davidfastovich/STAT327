@@ -163,6 +163,9 @@ monte.carlo.pi = function(n, draw=FALSE) {
       count = count + 0
     }
   }
+  if(draw == TRUE){
+    return(plot(x,y) + lines(x = cos(seq(from = 0, to = 2*pi, by = .01)), y = sin(seq(from = 0, to = 2*pi, by = .01))))
+  }
   return(pi = 4*(count/n))
 }
 cat(sep="", "monte.carlo.pi(1000)=", monte.carlo.pi(1000), "\n") # get estimate
@@ -176,8 +179,12 @@ each time. Draw a graph comparing these two distributions.  (You can
 use a reasonable graph of your choice.)
 
 ```{r}
-# ... your code here
+pi.est.100 <- replicate(500, expr = monte.carlo.pi(100))
+pi.est.1000 <- replicate(500, expr = monte.carlo.pi(1000))
 
+par(mfrow = c(2, 1))
+hist(pi.est.100, breaks = 20, main = "Estimate of pi with n = 100")
+hist(pi.est.1000, breaks = 20, main = "Estimate of pi with n = 1000")
 ```
 
 ## Part 3: Practice with apply() family of functions.
