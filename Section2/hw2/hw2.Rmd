@@ -163,9 +163,8 @@ monte.carlo.pi = function(n, draw=FALSE) {
       count = count + 0
     }
   }
-  if(draw == TRUE){
-    return(plot(x,y) + lines(x = cos(seq(from = 0, to = 2*pi, by = .01)), y = sin(seq(from = 0, to = 2*pi, by = .01))))
-  }
+  plot <- plot(x,y) + lines(x = cos(seq(from = 0, to = 2*pi, by = .01)), y = sin(seq(from = 0, to = 2*pi, by = .01)))
+  ifelse(draw == TRUE, , NA)
   return(pi = 4*(count/n))
 }
 cat(sep="", "monte.carlo.pi(1000)=", monte.carlo.pi(1000), "\n") # get estimate
