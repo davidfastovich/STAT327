@@ -23,7 +23,7 @@ grocery.list <- function(file, budget) {
   shopping.list = data.frame(item = character(), price = character(), quantity = character(), stringsAsFactors = FALSE)
   for(i in seq_len(length(groceries$item))) {
     if(groceries$price[i] < (budget-total)) {
-    n = how.many(groceries$item[i], n.max = ceiling((budget-total)/total))
+    n = how.many(groceries$item[i], n.max = floor((budget-total)/groceries$price[i]))
     total = total + (n * (groceries$price[i]))
     to.buy <- data.frame(a = groceries$item[i], b = groceries$price[i], c = n)
     shopping.list = rbind(shopping.list, to.buy)
