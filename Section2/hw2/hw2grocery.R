@@ -16,8 +16,7 @@ how.many <- function(item, n.max){
 # 4.2 Grocery list function
 grocery.list <- function(file, budget) {
   groceries <- read.table(file, stringsAsFactors = FALSE, sep = ",")
-  names(groceries)[1] <- "item"
-  names(groceries)[2] <- "price"
+  colnames(groceries) = c("item", "price")
   print(groceries)
   total = 0
   shopping.list = data.frame(item = character(), price = character(), quantity = character())
