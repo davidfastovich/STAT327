@@ -20,7 +20,7 @@ grocery.list <- function(file, budget) {
   names(groceries)[2] <- "price"
   print(groceries)
   total = 0
-  shopping.list = data.frame(item = character(), price = character(), quantity = character(), stringsAsFactors = FALSE)
+  shopping.list = data.frame(item = character(), price = character(), quantity = character())
   for(i in seq_len(length(groceries$item))) {
     if(groceries$price[i] < (budget-total)) {
     n = how.many(groceries$item[i], n.max = floor((budget-total)/groceries$price[i]))
@@ -30,8 +30,5 @@ grocery.list <- function(file, budget) {
     }
   }
   colnames(shopping.list) = c("item", "price", "quantity")
-  return(shopping.list)
+  return(shopping.list[!apply(shopping.list, 1, function(y) any(y == 0)), ])
 }
-
-to.buy <- data.frame(groceries$item[i], groceries$price[i], n)
-colnames(to.buy) <- c("")
