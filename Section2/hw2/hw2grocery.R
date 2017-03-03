@@ -31,3 +31,8 @@ grocery.list <- function(file, budget) {
   colnames(shopping.list) = c("item", "price", "quantity")
   return(shopping.list[!apply(shopping.list, 1, function(y) any(y == 0)), ])
 }
+
+# Calling grocery.list
+n <- grocery.list("groceries.csv", 10)
+print(n)
+cat(sep = "", "Your bill is $", sum(n$price*n$quantity))
