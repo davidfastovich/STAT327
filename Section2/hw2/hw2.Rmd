@@ -206,8 +206,7 @@ course. Some of its column names are abbreviations:
 Read the file into a data frame.
 
 ```{r}
-# ... your code here
-
+scores <- read.csv("scores.csv")
 ```
 
 Add three columns to the "scores" data frame:
@@ -227,7 +226,8 @@ names with one of
 Then display the new data frame.
 
 ```{r}
-# ... your code here
+scores$Pct.gr <- sapply(scores$Pct, FUN = PercentageGrade)
+scores$Pctile.gr <- 
 
 ```
 
