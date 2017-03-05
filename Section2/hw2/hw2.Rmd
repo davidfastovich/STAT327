@@ -163,8 +163,9 @@ monte.carlo.pi = function(n, draw=FALSE) {
       count = count + 0
     }
   }
-  plot <- plot(x,y) + lines(x = cos(seq(from = 0, to = 2*pi, by = .01)), y = sin(seq(from = 0, to = 2*pi, by = .01)))
-  ifelse(draw == TRUE, , NA)
+  if (draw == TRUE) {
+    plot <- plot(x,y) + lines(x = cos(seq(from = 0, to = 2*pi, by = .01)), y = sin(seq(from = 0, to = 2*pi, by = .01)))
+  }
   return(pi = 4*(count/n))
 }
 cat(sep="", "monte.carlo.pi(1000)=", monte.carlo.pi(1000), "\n") # get estimate
@@ -227,8 +228,8 @@ Then display the new data frame.
 
 ```{r}
 scores$Pct.gr <- sapply(scores$Pct, FUN = PercentageGrade)
-scores$Pctile.gr <- 
-
+scores$Pctile.gr <- sapply(scores$Pctile, FUN = PercentileGrade)
+scores$Grade <- mapply(FUN = CourseGrade, scores$Pct.gr, scores$Pctile.gr, USE.NAMES = FALSE)
 ```
 
 Display the average E1 score, rounded to one place after the decimal
@@ -237,23 +238,25 @@ should be an average E1 score for the A students, an average for the
 AB students, etc.) Hint: use tapply().
 
 ```{r}
-# ... your code here
-
+test <- tapply(X = scores$E1, INDEX = scores$Grade, FUN = mean)
+round(test)
 ```
 
 Display the average score (across all students) for each quiz
 (column). That is, display four quiz averages. Hint: use apply().
 
 ```{r}
-# ... your code here
-
+apply(X = scores[,1, drop = FALSE], MARGIN = 2, FUN = mean) #Quiz 1
+apply(X = scores[,2, drop = FALSE], MARGIN = 2, FUN = mean) #Quiz 2
+apply(X = scores[,3, drop = FALSE], MARGIN = 2, FUN = mean) #Quiz 3
+apply(X = scores[,4, drop = FALSE], MARGIN = 2, FUN = mean) #Quiz 4
 ```
 
 Display the average quiz score (across Q1 through Q4) for each student
 (row). That is, display 25 student averages. Hint: use apply().
 
 ```{r}
-# ... your code here
+apply(X = scores[,1:4, drop = FALSE], MARGIN = 1, FUN = mean)
 
 ```
 
