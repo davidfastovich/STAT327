@@ -65,10 +65,9 @@ largest.empty.row = function(board, col, debug=FALSE) {
     print(board)
     cat(sep="", ", col=", col, ")\n")
   }
-  # ...
-  return(6) # correct this return() statement
+  empty = max(which(x[,col] == "E"))
+  return(empty)
 }
-
 source("hw3test.R") # Run tests on the functions above.
 
 # ... your code to implement Connect Four using the
