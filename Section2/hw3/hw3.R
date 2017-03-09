@@ -1,5 +1,5 @@
-# Name: ...
-# Email: ...
+# Name: David Fastovich
+# Email: fastovich@wisc.edu
 
 rm(list = ls())
 
@@ -22,9 +22,12 @@ rm(list = ls())
 four.in.a.row = function(player, v, debug=FALSE) {
   if (debug) {
     cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
+  } 
+  if(sum(player == v) >= 4) {
+    return(TRUE)
+  } else {
+    return(FALSE)
   }
-  # ...
-  return(FALSE) # correct this return() statement
 }
 
 # Returns TRUE if (matrix) board (of character strings)
@@ -40,8 +43,17 @@ won = function(player, board, r, c, debug=FALSE) {
     print(board)
     cat(sep="", ", r=", r, ", c=", c, ")\n")
   }
-  # ...
-  return(FALSE) # correct this return() statement
+  if(four.in.a.row(player, v = x[row(x) == r]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = x[col(x) == c]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = x[row(x) - col(x) == r - c]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = x[row(x) + col(x) == r + c]) == TRUE) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }
 
 # Returns largest index of an empty position in column col
