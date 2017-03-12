@@ -113,7 +113,6 @@ for (i in 1:42) {
 }
 
 
-
 # Hint: this program is modeled on the tic-tac-toe program we did in
 # class, so studying the latter program is worthwhile.
 
