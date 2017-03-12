@@ -23,11 +23,7 @@ four.in.a.row = function(player, v, debug=FALSE) {
   if (debug) {
     cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
   } 
-  if(sum(player == v) >= 4) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+  return(sum(player == v) >= 4)
 }
 
 # Returns TRUE if (matrix) board (of character strings)
