@@ -19,11 +19,17 @@ rm(list = ls())
 # is TRUE, while
 #   four.in.a.row("O", c("O","X","X","X","X","O"))
 # is FALSE.
+
 four.in.a.row = function(player, v, debug=FALSE) {
   if (debug) {
     cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
   } 
-  return(sum(player == v) >= 4)
+  value <- rle(v)
+  if(any(value$lengths[value$values == "X" | value$values == "O"] >= 4)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }
 
 # Returns TRUE if (matrix) board (of character strings)
@@ -55,15 +61,17 @@ won = function(player, board, r, c, debug=FALSE) {
 # Returns largest index of an empty position in column col
 # of (matrix) board. If there is no such empty position in
 # board, return value is NULL.
-four.in.a.row = function(player, v, debug=FALSE) {
+
+largest.empty.row = function(board, col, debug=FALSE) {
   if (debug) {
-    cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
-  } 
-  value <- rle(v)
-  if(any(value$lengths[value$values == "X" | value$values == "O"] >= 4)) {
-    return(TRUE)
+    cat(sep="", "largest.empty.row(board=\n")
+    print(board)
+    cat(sep="", ", col=", col, ")\n")
+  }
+  if (any(board[,col] == "E")) {
+    return(max(which(board[,col] == "E")))
   } else {
-    return(FALSE)
+    return(TRUE) 
   }
 }
 
