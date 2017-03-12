@@ -2,8 +2,8 @@
 
 rm(list=ls())
 
-x = rep(1:3, each = 3)
-y = rep(1:3, times = 3)
+x = rep(1:7, each = 6)
+y = rep(1:6, times = 7)
 
 plot(x, y, type="n", xlim=c(0, 8), ylim=c(7, 0))
 segments(x0 = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5), 
@@ -13,13 +13,6 @@ segments(x0 = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 2.5, 3.5, 4.5,
 
 # Data matrix used to keep track of the game
 board = matrix(data=rep("E", times=42), nrow=6, ncol=7)
-
-# Loop that keeps asking people to pkay
-player = "X"
-for (i in 1:42) {
-  cat(sep="", "i=", i, ", player=", player, "\n")
-  player = ifelse(test=(player == "X"), yes="O", no="X")
-}
 
 # Click to play loop
 player = "X"
