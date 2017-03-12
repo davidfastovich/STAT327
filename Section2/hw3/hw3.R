@@ -59,18 +59,18 @@ won = function(player, board, r, c, debug=FALSE) {
 # Returns largest index of an empty position in column col
 # of (matrix) board. If there is no such empty position in
 # board, return value is NULL.
-largest.empty.row = function(board, col, debug=FALSE) {
+four.in.a.row = function(player, v, debug=FALSE) {
   if (debug) {
-    cat(sep="", "largest.empty.row(board=\n")
-    print(board)
-    cat(sep="", ", col=", col, ")\n")
-  }
-  if (any(board[,col] == "E")) {
-    return(max(which(board[,col] == "E")))
+    cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
+  } 
+  value <- rle(v)
+  if(any(value$lengths[value$values == "X" | value$values == "O"] >= 4)) {
+    return(TRUE)
   } else {
-   return(TRUE) 
+    return(FALSE)
   }
 }
+
 source("hw3test.R") # Run tests on the functions above.
 
 # ... your code to implement Connect Four using the
