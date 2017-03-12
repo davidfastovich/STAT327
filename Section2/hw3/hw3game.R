@@ -71,10 +71,12 @@ for (i in 1:42) {
   index = identify(x, y, n=1)
   col = x[index]
   empty = largest.empty.row(board, col)
-  # if (empty == TRUE) {
-  #   cat(set = "", "Column is full, select an empty column.", "\n")
-  #   index = identify(x, y, n=1)
-  # }
+  while (isTRUE(empty)) {
+    cat(set = "", "Column is full, select an empty column.", "\n")
+    index = identify(x, y, n=1)
+    col = x[index]
+    empty = largest.empty.row(board, col)
+  }
   row = y[empty]
   board[row, col] = player
   text(x=col, y=row, labels=player)
