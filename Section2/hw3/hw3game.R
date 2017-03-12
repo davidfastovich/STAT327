@@ -1,7 +1,5 @@
 # Draw connect four board.
 
-rm(list=ls())
-
 x = rep(1:7, each = 6)
 y = rep(1:6, times = 7)
 
@@ -14,16 +12,25 @@ segments(x0 = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 2.5, 3.5, 4.5,
 # Data matrix used to keep track of the game
 board = matrix(data=rep("E", times=42), nrow=6, ncol=7)
 
-# Click to play loop
+# Game! With functions to check for win and largest empty row
 player = "X"
 for (i in 1:42) {
   index = identify(x, y, n=1)
   col = x[index]
-  row = y[index]
+  empty = largest.empty.row(board, col)
+  # if (empty == TRUE) {
+  #   cat(set = "", "Column is full, select an empty column.", "\n")
+  #   index = identify(x, y, n=1)
+  # }
+  row = y[empty]
   board[row, col] = player
   text(x=col, y=row, labels=player)
   cat(sep="", "i=", i, ", player=", player, ", index=", index,
       ", row=", row, ", col=", col, ", board:", "\n")
   print(board)
+  if(won(player, board, row, col)) {
+    text(x=2, y=1/3, labels=paste(player, " won!"), col="red")
+    break
+  }
   player = ifelse(test=(player == "X"), yes="O", no="X")
 }
