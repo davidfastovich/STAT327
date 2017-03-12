@@ -25,11 +25,7 @@ four.in.a.row = function(player, v, debug=FALSE) {
     cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
   } 
   value <- rle(v)
-  if(any(value$lengths[value$values == "X" | value$values == "O"] >= 4)) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+  return(any(value$lengths[value$values == player] >= 4))
 }
 
 # Returns TRUE if (matrix) board (of character strings)
