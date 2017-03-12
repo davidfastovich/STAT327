@@ -2,12 +2,13 @@ rm(list = ls())
 
 # Detecting if four in a row exist in a given vector from the board helper function
 
+
 four.in.a.row = function(player, v, debug=FALSE) {
   if (debug) {
     cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
   } 
   value <- rle(v)
-  if(any(value$lengths >= 4)) {
+  if(any(value$lengths[value$values == "X" | value$values == "O"] >= 4)) {
     return(TRUE)
   } else {
     return(FALSE)
