@@ -43,13 +43,13 @@ won = function(player, board, r, c, debug=FALSE) {
     print(board)
     cat(sep="", ", r=", r, ", c=", c, ")\n")
   }
-  if(four.in.a.row(player, v = x[row(x) == r]) == TRUE) {
+  if(four.in.a.row(player, v = board[row(board) == r]) == TRUE) {
     return(TRUE)
-  } else if (four.in.a.row(player, v = x[col(x) == c]) == TRUE) {
+  } else if (four.in.a.row(player, v = board[col(board) == c]) == TRUE) {
     return(TRUE)
-  } else if (four.in.a.row(player, v = x[row(x) - col(x) == r - c]) == TRUE) {
+  } else if (four.in.a.row(player, v = board[row(board) - col(board) == r - c]) == TRUE) {
     return(TRUE)
-  } else if (four.in.a.row(player, v = x[row(x) + col(x) == r + c]) == TRUE) {
+  } else if (four.in.a.row(player, v = board[row(board) + col(board) == r + c]) == TRUE) {
     return(TRUE)
   } else {
     return(FALSE)
@@ -65,8 +65,11 @@ largest.empty.row = function(board, col, debug=FALSE) {
     print(board)
     cat(sep="", ", col=", col, ")\n")
   }
-  empty = max(which(x[,col] == "E"))
-  return(empty)
+  if (any(board[,col] == "E")) {
+    return(max(which(board[,col] == "E")))
+  } else {
+   return(TRUE) 
+  }
 }
 source("hw3test.R") # Run tests on the functions above.
 
