@@ -1,3 +1,55 @@
+rm(list = ls())
+
+# Detecting if four in a row exist in a given vector from the board helper function
+
+four.in.a.row = function(player, v, debug=FALSE) {
+  if (debug) {
+    cat(sep="", "four.in.a.row(player=", player, ", v=", v, ")\n")
+  } 
+  value <- rle(v)
+  if(any(value$lengths >= 4)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+# Check for win helper function
+
+won = function(player, board, r, c, debug=FALSE) {
+  if (debug) {
+    cat(sep="", "won(player=", player, ", board=\n")
+    print(board)
+    cat(sep="", ", r=", r, ", c=", c, ")\n")
+  }
+  if(four.in.a.row(player, v = board[row(board) == r]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = board[col(board) == c]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = board[row(board) - col(board) == r - c]) == TRUE) {
+    return(TRUE)
+  } else if (four.in.a.row(player, v = board[row(board) + col(board) == r + c]) == TRUE) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+# Largest empty row helper function
+
+largest.empty.row = function(board, col, debug=FALSE) {
+  if (debug) {
+    cat(sep="", "largest.empty.row(board=\n")
+    print(board)
+    cat(sep="", ", col=", col, ")\n")
+  }
+  if (any(board[,col] == "E")) {
+    return(max(which(board[,col] == "E")))
+  } else {
+    return(TRUE) 
+  }
+}
+
 # Draw connect four board.
 
 x = rep(1:7, each = 6)
