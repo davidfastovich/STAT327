@@ -67,11 +67,15 @@ largest.empty.row = function(board, col, debug=FALSE) {
   if (any(board[,col] == "")) { #This fails the stopifnots in the test script because I changed my empty value in the matrix to "" instead of "E"
     return(max(which(board[,col] == "")))
   } else {
-    return(TRUE) 
+    return(TRUE) #I have it return TRUE instead of NULL because that makes implementing a while loop in the game a lot easier
   }
 }
 
-# source("hw3test.R") # Run tests on the functions above.
+source("hw3test.R") # Run tests on the functions above. As noted above the largest.empty.row fails above 
+# because I have empty rows in my matrix below set to "" so the function looks for "" to mean empty 
+# instead of "E" as it is in hw3test.R. So if you want to test the largest.empty.row function with 
+# the test script just change the line if (any(board[,col] == "")) { to if (any(board[,col] == "E")) {
+# and it will work correctly and pass all tests.
 
 # Draw connect four board.
 
