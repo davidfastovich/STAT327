@@ -64,8 +64,8 @@ largest.empty.row = function(board, col, debug=FALSE) {
     print(board)
     cat(sep="", ", col=", col, ")\n")
   }
-  if (any(board[,col] == "E")) {
-    return(max(which(board[,col] == "E")))
+  if (any(board[,col] == "")) {
+    return(max(which(board[,col] == "")))
   } else {
     return(TRUE) 
   }
@@ -85,20 +85,26 @@ segments(x0 = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 2.5, 3.5, 4.5,
          y1 = c(6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.5, 6.5, 0.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5))
 
 # Data matrix used to keep track of the game
-board = matrix(data=rep("E", times=42), nrow=6, ncol=7)
+board = matrix(data=rep("", times=42), nrow=6, ncol=7)
 
 # Game! With functions to check for win and largest empty row
 player = "X"
 for (i in 1:42) {
-  index = identify(x, y, n=1)
-  col = x[index]
-  empty = largest.empty.row(board, col)
-  while (isTRUE(empty)) {
-    cat(set = "", "Column is full, select an empty column.", "\n")
+  if( player == "X") {
     index = identify(x, y, n=1)
     col = x[index]
-    empty = largest.empty.row(board, col)
+    while (isTRUE(empty)) {
+      cat(set = "", "Column is full, select an empty column.", "\n")
+      index = identify(x, y, n=1)
+      col = x[index]
+      empty = largest.empty.row(board, col)
+    }
+  } else {
+    index = sample(x=which(c(board) == ""), size=1)
+    col = x[index]
+    row = y[index]
   }
+  empty = largest.empty.row(board, col)
   row = y[empty]
   board[row, col] = player
   text(x=col, y=row, labels=player)
