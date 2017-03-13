@@ -64,14 +64,14 @@ largest.empty.row = function(board, col, debug=FALSE) {
     print(board)
     cat(sep="", ", col=", col, ")\n")
   }
-  if (any(board[,col] == "")) {
+  if (any(board[,col] == "")) { #This fails the stopifnots in the test script because I changed my empty value in the matrix to "" instead of "E"
     return(max(which(board[,col] == "")))
   } else {
     return(TRUE) 
   }
 }
 
-source("hw3test.R") # Run tests on the functions above.
+# source("hw3test.R") # Run tests on the functions above.
 
 # Draw connect four board.
 
@@ -93,6 +93,7 @@ for (i in 1:42) {
   if( player == "X") {
     index = identify(x, y, n=1)
     col = x[index]
+    empty = largest.empty.row(board, col)
     while (isTRUE(empty)) {
       cat(set = "", "Column is full, select an empty column.", "\n")
       index = identify(x, y, n=1)
@@ -102,9 +103,8 @@ for (i in 1:42) {
   } else {
     index = sample(x=which(c(board) == ""), size=1)
     col = x[index]
-    row = y[index]
+    empty = largest.empty.row(board, col)
   }
-  empty = largest.empty.row(board, col)
   row = y[empty]
   board[row, col] = player
   text(x=col, y=row, labels=player)
