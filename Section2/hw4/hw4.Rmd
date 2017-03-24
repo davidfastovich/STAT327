@@ -1,9 +1,9 @@
 # STAT 327 Homework 4
 We'll grade your homework by opening your "hw4.Rmd" file in RStudio (in a directory containing "farm.csv", "scores.csv", and "hw4freeCode.R"), clicking "Knit HTML", reading the HTML output, and reading your "hw4.Rmd" file. You should write R code anywhere you see an empty R code chunk.
 
-Name: ...
+Name: David Fastovich
 
-Email: ...@wisc.edu
+Email: fastovich@wisc.edu
 
 # Part 1: A "jackknife" procedure to find the most outlying point in a linear relationship between two variables
 
@@ -21,7 +21,11 @@ if (!require("RCurl")) {
 
 Use R to get the land area (sq. miles) of each state from the second table (labeled "Land area") in the web page https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area. Hint: you can use `tables = readHTMLTable(getURL("https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area"))` to read the data. Include code to remove the commas from the numbers.
 ```{r}
-# ...
+tables = readHTMLTable(getURL("https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area"), stringsAsFactors = FALSE)
+tables <- tables[[2]]
+colnames(tables) <- c("rank", "state", "sq.km", "sq.miles")
+tables$sq.km <- gsub(pattern = ",", replacement = "", x = tables$sq.km)
+tables$sq.miles <- gsub(pattern = ",", replacement = "", x = tables$sq.miles)
 ```
 
 Use R to get farm areas of states from "farm.csv". (Note: I got the data in 2013 from the spreadsheet in the row labeled "825 - Farms--Number and Acreage by State [Excel 131k] ..." at http://www.census.gov/compendia/statab/cats/agriculture/farms_and_farmland.html. I took the 2010 acreage (1000) column, multiplied by 1000, and divided by 640 (sq. miles per acre). You do not need to use this spreadsheet--just use "farm.csv".)
