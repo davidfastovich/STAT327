@@ -182,7 +182,9 @@ Write code that does the following:
     + Display the 5 producers who produced the most movies from among these 250
 
 ```{r}
-# ...
+movies <- readLines("http://www.imdb.com/chart/top")
+movies.lines <- grep(pattern = "\\s<a href=\"/title/(.*)/?pf.*", x = movies, value = TRUE)
+movie.link <- sub(pattern = "<a href=(.*)/tt(.*)/", replacement = "", x = movies)
 ```
 
 # Part 4: Extra Credit (not required; worth 0, 1, or 2 points)
