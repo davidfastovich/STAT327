@@ -21,40 +21,50 @@ if (!require("RCurl")) {
 
 Use R to get the land area (sq. miles) of each state from the second table (labeled "Land area") in the web page https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area. Hint: you can use `tables = readHTMLTable(getURL("https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area"))` to read the data. Include code to remove the commas from the numbers.
 ```{r}
-tables = readHTMLTable(getURL("https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area"), stringsAsFactors = FALSE)
-tables <- tables[[2]]
+tables = readHTMLTable(getURL("https://simple.wikipedia.org/wiki/List_of_U.S._states_by_area"), stringsAsFactors = FALSE)[[2]]
 colnames(tables) <- c("rank", "state", "sq.km", "sq.miles")
-tables$sq.km <- gsub(pattern = ",", replacement = "", x = tables$sq.km)
-tables$sq.miles <- gsub(pattern = ",", replacement = "", x = tables$sq.miles)
+# tables$state <- gsub(pattern = "\\s", replacement = "", x = tables$state)
+tables$sq.km <- as.numeric(gsub(pattern = ",", replacement = "", x = tables$sq.km))
+tables$sq.miles <- as.numeric(gsub(pattern = ",", replacement = "", x = tables$sq.miles))
 ```
 
 Use R to get farm areas of states from "farm.csv". (Note: I got the data in 2013 from the spreadsheet in the row labeled "825 - Farms--Number and Acreage by State [Excel 131k] ..." at http://www.census.gov/compendia/statab/cats/agriculture/farms_and_farmland.html. I took the 2010 acreage (1000) column, multiplied by 1000, and divided by 640 (sq. miles per acre). You do not need to use this spreadsheet--just use "farm.csv".)
 ```{r}
-# ...
+farm <- read.csv("farm.csv", stringsAsFactors = FALSE)
 ```
 
 Create a data frame called "area" whose columns are "state", "farm", and "land", which contain state names, farm areas, and land areas, respectively. Hint: the states aren't in the same order in the two data sets, so getting the "area" data frame right requires a little care.
 ```{r}
-# ...
+tables <- tables[-51, ]
+a.ord <- order(tables$state)
+area <- data.frame(state = farm$state,
+                   farm = farm$sq.miles)
+area <- cbind(area, tables$sq.miles[a.ord])
+names(area)[3] <- "land"
 ```
 
 Make a scatterplot of y = farm area vs. x = land area.
 ```{r}
-# ...
+plot(x = area$land, y = area$farm, xlab = "Land Area (sq. mi)", ylab = "Farm Area (sq. mile)")
 ```
 
 There are two prominent outliers. Use `identify()` to find their indices.
 
 Unfortunately, `identify()` doesn't work on an R graph that we're viewing through an HTML page. We can use the RStudio menu command "Chunks > Run all" to run all the code in this file in the console, and then click on the graph in RStudio's "Plots" tab. Once you know the indices, just assign them to variables so you can use them later. Then comment out your call to identify().
 ```{r}
-# ...
+# outlier.1 <- identify(x = area$land, y = area$farm, n = 1)
+# outlier.2 <- identify(x = area$land, y = area$farm, n = 1)
 ```
 
 The two outliers are Texas, which fits the roughly linear trend of the rest of the data, and Alaska, which does not fit.
 
 Make a linear model of y = farm area vs. x = land area. Make your scatterplot again, and this time add the regression line to it. Then make a linear model of the same data, except with Alaska removed. Add that regression line, colored red, to your scatterplot.
 ```{r}
-# ...
+fit.area <- lm(farm ~ land, data = area)
+plot(x = area$land, y = area$farm, xlab = "Land Area (sq. mi)", ylab = "Farm Area (sq. mile)")
+abline(fit.area)
+fit.area.noalaska <- lm(farm ~ land, data = area[-outlier.2, ])
+abline(fit.area.noalaska, col = "red")
 ```
 
 Notice that, with respect to the original regression line, Texas has the biggest residual (difference in actual and predicted y), because Alaska pulled the line down toward itself. But really Alaska is the outlier! Next we'll do a "jackknife" procedure to discover computationally that Alaska is the most important outlier.
