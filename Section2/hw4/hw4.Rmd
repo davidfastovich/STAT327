@@ -183,8 +183,16 @@ Write code that does the following:
 
 ```{r}
 movies <- readLines("http://www.imdb.com/chart/top")
-movies.lines <- grep(pattern = "\\s<a href=\"/title/(.*)/?pf.*", x = movies, value = TRUE)
-movie.link <- sub(pattern = "<a href=(.*)/tt(.*)/", replacement = "", x = movies)
+movies.lines <- grep(pattern = "\\s<a href=\"/title/(.*)/.*", x = movies, value = TRUE)
+movie.link <- sub(pattern = ".*<a href=\"(.*)/.*", replacement = "\\1", x = movies.lines)
+
+producers <- list()
+
+for (i in 1:length(movie.link)) {
+  link <- paste0("http://www.imdb.com/", movie.link[i], "/fullcredits", )
+  tables <- readHTMLTable(link)
+  tables <- tables[[4]]
+}
 ```
 
 # Part 4: Extra Credit (not required; worth 0, 1, or 2 points)
