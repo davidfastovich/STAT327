@@ -52,8 +52,10 @@ There are two prominent outliers. Use `identify()` to find their indices.
 
 Unfortunately, `identify()` doesn't work on an R graph that we're viewing through an HTML page. We can use the RStudio menu command "Chunks > Run all" to run all the code in this file in the console, and then click on the graph in RStudio's "Plots" tab. Once you know the indices, just assign them to variables so you can use them later. Then comment out your call to identify().
 ```{r}
-# outlier.1 <- identify(x = area$land, y = area$farm, n = 1)
-# outlier.2 <- identify(x = area$land, y = area$farm, n = 1)
+# identify(x = area$land, y = area$farm, n = 1)
+# identify(x = area$land, y = area$farm, n = 1)
+outlier.1 <- 43
+outlier.2 <- 2
 ```
 
 The two outliers are Texas, which fits the roughly linear trend of the rest of the data, and Alaska, which does not fit.
@@ -71,19 +73,26 @@ Notice that, with respect to the original regression line, Texas has the biggest
 
 Make a plot of the residuals for the original model. (Hint: they're available in the output of `lm()`.)
 ```{r}
-# ...
+plot(fit.area, which = 1)
 ```
 
 Notice again that the Texas residual is bigger than the Alaska residual.
 
 Next use a loop to create n=50 models. In step i, make a model of the data with observation i removed. Then predict the value of y[i] from that model, and find the residual (difference) between (the removed) y[i] and the prediction. Save these residuals in a vector `r.jack`. (A "jackknife" procedure works by removing one observation (or several) from a data set, and then making a prediction from that smaller data set, and repeating this for each observation.)
 ```{r}
-# ...
+r.jack <- data.frame(residuals = numeric())
+for (i in 1:dim(area)[1]) {
+  fit.area.jack <- lm(farm ~ land, data = area[-i, ])
+  pred <- predict(fit.area.jack, newdata = data.frame(land = area$land[i]))
+  resid.jack <- area$farm[i] - pred
+  r.jack <- rbind(r.jack, resid.jack)
+}
 ```
 
 Plot these "jackknife" residuals.
 ```{r}
-# ...
+plot(x = predict(fit.area), y = r.jack$X.12031.1567752233, xlab = "Fitted Values for Original Linear Model", ylab = "Jackknife Residuals", ylim = c(-400000, 400000))
+abline(h = 0, lty = 2)
 ```
 
 Notice now that Alaska is clearly the real outlier.
