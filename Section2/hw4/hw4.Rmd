@@ -110,28 +110,40 @@ if (!require("ggplot2")) {
 1. Consider the built-in data set `warpbreaks`. (See `?warpbreaks`, http://en.wikipedia.org/wiki/Warp_%28weaving%29, and http://en.wikipedia.org/wiki/Power_loom#Operation.) Make a histogram of the numbers of warp breaks.
 
 ```{r}
-# ...
+ggplot(warpbreaks, aes(breaks)) +
+  geom_histogram(bins = 14)
 ```
 
 2. Make a density plot of the numbers of warp breaks.
 ```{r}
-# ...
+ggplot(warpbreaks, aes(breaks)) +
+  geom_density()
 ```
 
 3. Make two density plots of warp breaks, using a different color for each wool type, on a single panel. Does the wool type have a strong effect on the number of breaks?
 ```{r}
-# ...
+ggplot(warpbreaks, aes(breaks)) +
+  geom_density(aes(color = wool))
 ```
+
+**Wool type does have a strong effect on the number of breaks. Wool B has much less breaks when compared to Wool B.**
 
 4. Make three density plots of warp breaks, using a different color for each tension level, on a single panel. How does tension seem to affect the number of breaks?
 ```{r}
-# ...
+ggplot(warpbreaks, aes(breaks)) +
+  geom_density(aes(color = tension))
 ```
+
+**H tension tended to produced the least amount of breaks, followed by M tension, and L tension.**
 
 5. "Old Faithful" is a geyser in Yellowstone National Park that erupts on a remarkably regular schedule (http://en.wikipedia.org/wiki/Old_Faithful). Make a scatterplot of waiting time ($y$) vs. most recent eruption time ($x)$ from the built-in `faithful` data set. (See `?faithful`.) Include a simple linear regression line. What is the most striking feature of this plot?
 ```{r}
-# ...
+ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  geom_jitter() +
+  geom_smooth(method = "lm", se = FALSE)
 ```
+
+**The most striking feature of the the plot is the grouping of the data. When the eruption time is greater than about 4 minutes the waiting time tends to be above 70 minutes. However, when the eruption time is less than 3 minutes the waiting time tends to be below 70 minutes.**
 
 # Part 3: Web-scraping
 
