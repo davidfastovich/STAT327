@@ -193,7 +193,7 @@ for (i in 1:length(movie.link)) {
   link.lines <- readLines(link)
   title.line <- grep(pattern = ".*<title>(.*)</title>.*", x = link.lines, value = TRUE)
   title <- sub(pattern = ".*<title>(.*)\\s[(].*", replacement = "\\1", x = title.line)
-  tables <- readHTMLTable(link, stringsAsFactors = FALSE))[[4]]
+  tables <- readHTMLTable(link, stringsAsFactors = FALSE)[[4]]
   producers[[title]] = tables$V1
 }
 ```
