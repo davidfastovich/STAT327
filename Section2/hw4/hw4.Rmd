@@ -190,7 +190,7 @@ producers <- list()
 
 for (i in 1:length(movie.link)) {
   link <- paste0("http://www.imdb.com/", movie.link[i], "/fullcredits")
-  print(link)
+  # print(link)
   link.lines <- readLines(link)
   title.line <- grep(pattern = ".*<title>(.*)</title>.*", x = link.lines, value = TRUE)
   title <- sub(pattern = ".*<title>(.*)\\s[(].*", replacement = "\\1", x = title.line)
