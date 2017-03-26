@@ -197,6 +197,8 @@ for (i in 1:length(movie.link)) {
   tables <- readHTMLTable(link, stringsAsFactors = FALSE)[[4]]
   producers[[title]] = tables$V1
 }
+
+sort(table(as.character(unlist(producers))), decreasing = TRUE)[1:5]
 ```
 
 # Part 4: Extra Credit (not required; worth 0, 1, or 2 points)
