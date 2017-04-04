@@ -1,0 +1,80 @@
+# STAT 327 Group work on Optimization
+
+Please write the names and email addresses of your group members.
+Here's an example:
+
+* Name / email (@wisc.edu only): John Gillett / jgillett@wisc.edu
+
+* Name / email (@wisc.edu only): ...
+* Name / email (@wisc.edu only): ...
+* Name / email (@wisc.edu only): ...
+* Name / email (@wisc.edu only): ...
+* Name / email (@wisc.edu only): ...
+* Name / email (@wisc.edu only): ...
+
+# Part 1: One-dimensional optimization
+
+Graph the object's altitude vs. time.
+
+```{r}
+drag <- function(t) {
+  g = 9.81 
+  z0 = 100 
+  v0 = 55
+  m = 80
+  c = 15
+  return(abs(z0 + (((m/c)*(v0 + ((m*g)/c))*(1 - exp(-((c/m)*t))))) - (((m*g)/c)*t)))
+}
+curve(drag, from = 0, to = 11.61085)
+```
+
+Find the time at which the object strikes the ground.
+
+```{r}
+drag <- function(z0, m, c, v0, g, t) {
+  return(abs(z0 + (((m/c)*(v0 + ((m*g)/c))*(1 - exp(-((c/m)*t))))) - (((m*g)/c)*t)))
+}
+min <- optimize(drag, c(0,12),g = 9.81, z0 = 100, v0 = 55, m = 80, c = 15)
+min$minimum
+```
+
+Find the object's maximum height.
+
+```{r}
+drag <- function(z0, m, c, v0, g, t) {
+  return(-(z0 + (((m/c)*(v0 + ((m*g)/c))*(1 - exp(-((c/m)*t))))) - (((m*g)/c)*t)))
+}
+max <- optimize(drag, c(0,12),g = 9.81, z0 = 100, v0 = 55, m = 80, c = 15)
+-max$objective
+```
+
+Find the time at which the object reaches its maximum height.
+
+```{r}
+drag <- function(z0, m, c, v0, g, t) {
+  return(-(z0 + (((m/c)*(v0 + ((m*g)/c))*(1 - exp(-((c/m)*t))))) - (((m*g)/c)*t)))
+}
+max <- optimize(drag, c(0,12),g = 9.81, z0 = 100, v0 = 55, m = 80, c = 15)
+max$minimum
+```
+
+# Part 2: Multi-dimensional optimization
+
+Implement `gradient.descent()`.
+
+```{r}
+poll.conc <- function(x, y) {
+  return(7.9 + (0.13*x) + (0.21*y) - (0.05*(x^2)) - (0.016*(y^2)) - (0.007*x*y))
+}
+```
+
+Graph the concentration.
+
+Use `gradient.descent()` to find the peak.
+
+Use `optim()` with `method=Nelder-Mead` to find the peak.
+
+Use `optim()` with `method=BFGS` to find the peak.
+
+How many calls did `optim()` make in each case? Which method would you
+expect to be faster?
