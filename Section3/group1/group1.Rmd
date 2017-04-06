@@ -112,13 +112,21 @@ persp.out <- persp(grid.x, grid.y, grid.z, theta = 60, phi = 20)
 points(trans3d(x=x.y[1], y=x.y[2], z=z, pmat=persp.out), col="blue", pch=16)
 
 # Starting to use optim - need to change function to make it evaluate the given paramaters
-poll.conc.optim <- function(x) {
- x = x[1]
- y = x[2]
+poll.conc.optim <- function(par) {
+ x = par[1]
+ y = par[2]
  return((7.9 + (0.13*x) + (0.21*y) - (0.05*(x^2)) - (0.016*(y^2)) - (0.007*x*y)))
 }
 
-optim(par = c(.88, 6), fn = poll.conc, gr = gradient.f.using.par, method = "Nelder-Mead")
+gradient.f.using.par.optim = function(par) { # Define gradient(z) = (df.dx, df.dy).
+  x = par[1]
+  y = par[2]
+  df.dx = (0.13 - 0.05*2*x - 0.007*y)
+  df.dy = (0.21 - 0.016*y*2 - 0.007*x)
+  return(c(df.dx, df.dy))
+}
+
+optim(par = c(0, 0), fn = poll.conc.optim, gr = gradient.f.using.par.optim, method = "Nelder-Mead")
 ```
 
 
