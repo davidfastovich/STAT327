@@ -63,8 +63,92 @@ max$minimum
 Implement `gradient.descent()`.
 
 ```{r}
+# The gradient descent function
+gradient.descent = function(par, gr, gamma=.1, epsilon=.01, n=1500, verbose=FALSE, ...) {
+  for (i in seq_len(n)) {
+    gradient = gr(..., par)
+    par = par - gamma * gradient
+    gradient.size = sum(abs(gradient))
+    if (verbose) {
+      cat(sep="", "i=", i, ", par=c(", paste(signif(par, 4), collapse=","),
+          "), gradient=c(", paste(signif(gradient, 4), collapse=","),
+          "), size=", signif(gradient.size, 4), "\n")
+    }
+    if (gradient.size < epsilon) {
+      break
+    }
+  }
+  return(par)
+}
+
+# Function of interest - trying to maximize
 poll.conc <- function(x, y) {
-  return(7.9 + (0.13*x) + (0.21*y) - (0.05*(x^2)) - (0.016*(y^2)) - (0.007*x*y))
+  return((7.9 + (0.13*x) + (0.21*y) - (0.05*(x^2)) - (0.016*(y^2)) - (0.007*x*y)))
+}
+
+# Derivative of the function with respect to x and y - made it negative so that way it becomes a valley rather than a mound
+gradient.f.using.par = function(par) { # Define gradient(z) = (df.dx, df.dy).
+  x = par[1]
+  y = par[2]
+  df.dx = -(0.13 - 0.05*2*x - 0.007*y)
+  df.dy = -(0.21 - 0.016*y*2 - 0.007*x)
+  return(c(df.dx, df.dy))
+}
+
+# Getting the plot set up
+grid.n <- 20
+limit.x <- 10
+limit.y <- 20
+grid.x <- seq(-limit.x, limit.x, length.out = grid.n)
+grid.y <- seq(0, limit.y, length.out = grid.n)
+grid.z <- outer(grid.x, grid.y, poll.conc)
+
+# Implementing the gradient descent fucntion from a starting point of x = 0, y = 0
+x.y <- gradient.descent(par = c(0,0), gr=gradient.f.using.par, verbose = FALSE)
+
+# Results from the gradient descent function get saved in the x.y vector. Evaluated to form Z and then plotted
+z <- poll.conc(x = x.y[1], y = x.y[2])
+persp.out <- persp(grid.x, grid.y, grid.z, theta = 60, phi = 20)
+points(trans3d(x=x.y[1], y=x.y[2], z=z, pmat=persp.out), col="blue", pch=16)
+
+# Starting to use optim
+
+
+optim(par = c(0,0), fn = poll.conc, gr = gradient.f.using.par, method = "Nelder-Mead")
+```
+
+
+This section is only if you want to see it find the maximum
+```{r}
+gradient.f = function(x,y) { # Define gradient(z) = (df.dx, df.dy).
+  df.dx = -(0.13 - 0.05*2*x - 0.007*y)
+  df.dy = -(0.21 - 0.016*y*2 - 0.007*x)
+  return(c(df.dx, df.dy))
+}
+
+persp.out <- persp(grid.x, grid.y, grid.z, theta = 15, phi = 90)
+x = 0 # Starting x
+y = 0   # Starting y
+old.x = x
+old.y = y
+n = 60
+gamma = .5 # Step size parameter. (Or, better: vary gamma with a line search.)
+
+for(i in seq_len(n)) {
+  g = gradient.f(x, y)
+  x = x - gamma * g[1]
+  y = y - gamma * g[2]
+  if (TRUE) { # This block is not part of the algorithm. It just draws.
+    z = poll.conc(x, y)
+    points(trans3d(x=x, y=y, z=0, pmat=persp.out), col="blue", pch=16)
+    points(trans3d(x=x, y=y, z=z, pmat=persp.out), col="red", pch=16)
+    lines(trans3d(x=c(x, x), y=c(y, y), z=c(0, z), pmat=persp.out), col="red")
+    lines(trans3d(x=c(old.x, x), y=c(old.y, y), z=c(0, 0), pmat=persp.out),
+          col="green")
+    old.x = x
+    old.y = y
+    scan(what=character(), n=1, quiet=TRUE) # Require "Enter" to move.
+  }
 }
 ```
 
