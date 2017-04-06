@@ -111,10 +111,14 @@ z <- poll.conc(x = x.y[1], y = x.y[2])
 persp.out <- persp(grid.x, grid.y, grid.z, theta = 60, phi = 20)
 points(trans3d(x=x.y[1], y=x.y[2], z=z, pmat=persp.out), col="blue", pch=16)
 
-# Starting to use optim
+# Starting to use optim - need to change function to make it evaluate the given paramaters
+poll.conc.optim <- function(x) {
+ x = x[1]
+ y = x[2]
+ return((7.9 + (0.13*x) + (0.21*y) - (0.05*(x^2)) - (0.016*(y^2)) - (0.007*x*y)))
+}
 
-
-optim(par = c(0,0), fn = poll.conc, gr = gradient.f.using.par, method = "Nelder-Mead")
+optim(par = c(.88, 6), fn = poll.conc, gr = gradient.f.using.par, method = "Nelder-Mead")
 ```
 
 
