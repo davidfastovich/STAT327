@@ -65,37 +65,16 @@ a. Create a scatterplot of `farm` vs. `land`. Include the least
 squares regression line colored "limegreen". (Notice that it is
 heavily influenced by the outlier, Alaska.)
 
+```{r}
+plot(y = area$farm, x = area$land)
+abline(lm(farm ~ land, data = area), col = "limegreen")
+```
+
 b. Fix $k=19000$. Estimate $\beta_0$ and $\beta_1$ using the
 Nelder-Mead method in `optim()` with the initial parameters
 `c(0 ,0)`. Add this line to your plot colored "navy".
 
-c. Change the method to BFGS to get another set of estimates.
-Add this line to your plot colored "black".
-
-d. Change the method to CG to get another set of estimates. Add this
-line to your plot colored "coral" and with line type "dashed".
-
-e. Add a legend to your plot.
-
 ```{r}
-plot(y = area$farm, x = area$land), 
-abline(lm(farm ~ land, data = area))
-```
-
-```{r}
-rho <- function(t, k) {
-  if((abs(t) <= k)) {
-    p <- (t^2)
-  } else {
-    p <- ((2*k*abs(t))-(k^2))
-  }
-  return(p)
-}
-
-robust.regr <- function(beta, x, y, k) {
-  return((1/50) * sum(rho(t = (y - beta[1] - (beta[2]*x)), k =19000)*(y - beta[1] - )
-}
-
 robust.regr <- function(x) {
   b0 <- x[1]
   b1 <- x[2]
@@ -108,30 +87,59 @@ robust.regr <- function(x) {
   return((sum(value)/n))
 }
 
-optim(par = c(0,0), fn = robust.regr, method = "Nelder-Mead")
+nd <- optim(par = c(0,0), fn = robust.regr, method = "Nelder-Mead")
 
-rlm(farm ~ land, data = area)
+plot(y = area$farm, x = area$land)
+abline(lm(farm ~ land, data = area), col = "limegreen")
+abline(a = nd$par[1], b = nd$par[2], col = "navy")
+```
 
-# robust.regr.b0 <- function(x) {
-#   b0 <- x[1]
-#   b1 <- x[1]
-#   return((-1/n)*sum(r.prime*(y-bo-b1*x)))
-# }
-# 
-# robust.regr.b1 <- function(x) {
-#   y = area$farm
-#   x = area$land
-#   n = 50
-#   b0 <- x[1]
-#   b1 <- x[1]
-#   return((-1/n)*sum(x*r.prime*(y-bo-b1*x)))
-# }
-# 
-# robust.regr.gr <- function(x) {
-#   k = 19000
-#   return(c(2*t, 2*k*sign(t)))
-# }
+c. Change the method to BFGS to get another set of estimates.
+Add this line to your plot colored "black".
 
+```{r}
+d.robust.regr <- function(x) {
+  b0 <- x[1]
+  b1 <- x[2]
+  x <- area$land
+  y <- area$farm
+  n <- 50
+  k <- 19000
+  t <- (y - b0 - (b1*x))
+  d.db <- ifelse((abs(t) <= k), (t^2), (2*k*sign(t)))
+  return(c(-(sum(d.db)/n), -(sum(x*d.db)/n)))
+}
+
+bfgs <- optim(par = c(0,0), fn = robust.regr, gr = d.robust.regr, method = "BFGS")
+
+plot(y = area$farm, x = area$land)
+abline(lm(farm ~ land, data = area), col = "limegreen")
+abline(a = nd$par[1], b = nd$par[2], col = "navy")
+abline(a = bfgs$par[1], b = bfgs$par[2], col = "black")
+```
+
+d. Change the method to CG to get another set of estimates. Add this
+line to your plot colored "coral" and with line type "dashed".
+
+```{r}
+cg <- optim(par = c(0,0), fn = robust.regr, gr = d.robust.regr, method = "CG")
+
+plot(y = area$farm, x = area$land)
+abline(lm(farm ~ land, data = area), col = "limegreen")
+abline(a = nd$par[1], b = nd$par[2], col = "navy")
+abline(a = bfgs$par[1], b = bfgs$par[2], col = "black")
+abline(a = cg$par[1], b = cg$par[2], col = "coral", lty = "dashed")
+```
+
+e. Add a legend to your plot.
+
+```{r}
+plot(y = area$farm, x = area$land)
+abline(lm(farm ~ land, data = area), col = "limegreen")
+abline(a = nd$par[1], b = nd$par[2], col = "navy")
+abline(a = bfgs$par[1], b = bfgs$par[2], col = "black")
+abline(a = cg$par[1], b = cg$par[2], col = "coral", lty = "dashed")
+legend("topleft", legend = c("lm", "ND", "BFGS", "CG"), lty = c(1, 1, 1, 2), col = c("limegreen", "navy", "black", "coral"))
 ```
 
 f. For which method was the value of the Tukey function the smallest?
@@ -141,7 +149,12 @@ interval $t \in (-100000,100000)$. Do you have an intuition of why the
 robust line is less influenced by the outliers in the data?
 
 ```{r}
-# ...
+rho <- function(t,k){
+  k = 19000
+  return(ifelse((abs(t) <= k), (t^2), (2*k*abs(t)-(k^2))))
+}
+
+curve(rho, from = -100000, to = 100000)
 ```
 
 # Part 2: Exponential smoothing
