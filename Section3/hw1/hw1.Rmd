@@ -188,24 +188,39 @@ a. Using `optimize()` on the interval $[0,1]$, find the value of $\beta$ that pr
 ```{r}
 forecast.error <- function(b) {
   y = nhtemp
-  y.hat <- c()
-  for (i in length(nhtemp)) {
-    y.hat.i = (b*y[i-1]) + (1-b)*y.hat[i-1]
-    y.hat = c(y.hat, y.hat.i)
+  y.hat = y[1]
+  for (i in 2:length(y)) {
+    y.hat[i] = (b*y[i-1]) + ((1-b)*y.hat[i-1])
   }
+  return(sum((y - y.hat)^2)/60)
 }
+
+fore <- optimize(forecast.error, interval = c(0,1))
+fore$minimum
 ```
 
 b. Plot the yearly average measurements of temperature for New Hampshire, from 1912 to 1971, and overlay the exponential smoothing of it using `lines()` (use a different color).
 
 ```{r}
+y.hat <- function(y){
+  y.hat = y[1]
+  for (i in 2:length(y)) {
+    y.hat[i] = (fore$minimum*y[i-1]) + ((1-fore$minimum)*y.hat[i-1])
+  }
+}
 
+
+plot(nhtemp)
+lines((fore$minimum * nhtemp)+((1 - fore$minimum)*y.hat), col = "blue") 
 ```
 
 c. Reproduce the previous plot, but include some other levels of smoothing, say $\beta=0.1$ and $\beta=0.9$. Use different colors and include a legend.
 
 ```{r}
-
+plot(nhtemp)
+lines((fore$minimum * nhtemp)+((1 - fore$minimum)*y.hat), col = "blue") 
+lines((.1 * nhtemp)+((1 - .1)*y.hat), col = "red") 
+lines((.9 * nhtemp)+((1 - .9)*y.hat), col = "green") 
 ```
 
 # Part 3: Optimization for Maximum Likelihood Estimation
