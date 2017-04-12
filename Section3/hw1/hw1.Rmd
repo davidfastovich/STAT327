@@ -4,9 +4,9 @@ The `.Rmd` version of this file is [here](http://www.stat.wisc.edu/~jgillett/327
 
 We'll grade your homework by opening your "hw1.Rmd" file in RStudio (in a directory containing the data files), clicking "Knit HTML", reading the HTML output, and reading your "hw1.Rmd" file. You should write R code anywhere you see an empty R code chunk.
 
-Name: ...
+Name: David Fastovich
 
-Email: ...
+Email: fastovich@wisc.edu
 
 # Part 1: Robust Regression
 
