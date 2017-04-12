@@ -186,7 +186,14 @@ The derivatives of this function are rather complicated (notice that $\hat{Y}_i$
 a. Using `optimize()` on the interval $[0,1]$, find the value of $\beta$ that produces the minimum forecast error.
 
 ```{r}
-
+forecast.error <- function(b) {
+  y = nhtemp
+  y.hat <- c()
+  for (i in length(nhtemp)) {
+    y.hat.i = (b*y[i-1]) + (1-b)*y.hat[i-1]
+    y.hat = c(y.hat, y.hat.i)
+  }
+}
 ```
 
 b. Plot the yearly average measurements of temperature for New Hampshire, from 1912 to 1971, and overlay the exponential smoothing of it using `lines()` (use a different color).
