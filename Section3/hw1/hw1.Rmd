@@ -304,7 +304,22 @@ Use `optim()` with its default Nelder-Mead method to find the estimates of $\bet
 * The curve $y = p(x; \beta_0, \beta_1)$, which should fit the previous 25 proportions quite well.
 
 ```{r}
-# ...
+mle.lm <- function(b, x, y) {
+  b0 <- b[1]
+  b1 <- b[2]
+  return(-((-sum(log(1 + exp(b0 + (b1*x))))) + (sum(y*(b0 + (b1*x))))))
+}
+
+mle.b0.b1 <- optim(par = c(0,0), fn = mle.lm, method = "Nelder-Mead", x = menarche.cases$age, y = menarche.cases$reached.menarche)
+mle.b0.b1$par
+
+p.b0.b1 <- function(x) {
+  return((1/(1 + exp(-(mle.b0.b1$par[1] + (mle.b0.b1$par[2]*x))))))
+}
+
+curve(p.b0.b1, from = min(menarche.cases$age), to = max(menarche.cases$age))
+points(jitter(x = menarche.cases$age), y = menarche.cases$reached.menarche)
+points(x = menarche$Age, y = (menarche$Menarche/menarche$Total), col  = "red")
 ```
 
 (Note that R's `glm()` function can also find the required model. You must use `optim()`, as the goal is to practice with it. If you know `glm()`, you're welcome to use it to check your work.)
