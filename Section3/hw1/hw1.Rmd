@@ -242,7 +242,18 @@ Since the logarithm is an increasing function, the maximum of $l$ occurs at the 
 Use `optim()` with its default Nelder-Mead method to find the estimates of $\mu$ and $\sigma$ that maximize $l$ over the data $x_1, \ldots, x_n =$ `mtcars$mpg`. Check your `optim()` estimates by comparing them to the sample mean and (population) standard deviation.
 
 ```{r}
-# ...
+mle <- function(par, x) {
+  mu <- par[1]
+  sigma <- (par[2])
+  x = mtcars$mpg
+  n = length(x)
+  return(-(n*log(1/(sqrt(2*pi)*sigma)) - ((1/(2*(sigma)^2))*sum((x-mu)^2))))
+}
+
+optim(c(20, 6), mle, method = "Nelder-Mead")
+
+mean(mtcars$mpg)
+sd(mtcars$mpg)
 ```
 
 ## 3(b) MLE for the parameters $\beta_0$ and $\beta_1$ in logistic regression
