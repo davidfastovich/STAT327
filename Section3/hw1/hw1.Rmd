@@ -250,7 +250,7 @@ mle <- function(par, x) {
   return(-(n*log(1/(sqrt(2*pi)*sigma)) - ((1/(2*(sigma)^2))*sum((x-mu)^2))))
 }
 
-optim(c(20, 6), mle, method = "Nelder-Mead")
+optim(c(1, 1), mle, method = "Nelder-Mead")
 
 mean(mtcars$mpg)
 sd(mtcars$mpg)

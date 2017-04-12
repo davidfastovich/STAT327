@@ -313,7 +313,34 @@ legend(&quot;bottomright&quot;, legend = c(&quot;Y&quot;, &quot;Min&quot;, &quot
 <p>If we now consider the sample <span class="math inline">\((x_1, \ldots, x_n)\)</span> as fixed, then <span class="math inline">\(f(x_1, \ldots, x_n; \mu; \sigma)\)</span> can be regarded as a function of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> called the likelihood, <span class="math inline">\(L\)</span>: <span class="math display">\[L(\mu, \sigma; x_1, \ldots, x_n) = f(x_1, \ldots, x_n; \mu; \sigma)\]</span></p>
 <p>We want to use optimization to find the <span class="math inline">\((\mu, \sigma)\)</span> pair that maximizes <span class="math inline">\(L(\mu, \sigma; x_1, \ldots, x_n)\)</span>. However, computing <span class="math inline">\(L\)</span> is problematic because its product of small numbers often leads to underflow, in which the product is closer to zero than a computer can represent with the usual floating-point arithmetic. Taking logarithms addresses this problem by transforming products of very small positive numbers to sums of moderate negative numbers. For example, <span class="math inline">\(10^{-10}\)</span> is very small, but <span class="math inline">\(\log(10^{-10}) \approx -23.03\)</span> is moderate. With this in mind, the log likelihood <span class="math inline">\(l\)</span> is <span class="math display">\[l(\mu, \sigma; x_1, \ldots, x_n) = \log\left(L(\mu, \sigma; x_1, \ldots, x_n)\right) = n \log\left(\frac{1}{\sqrt{2 \pi} \sigma}\right) -\frac{1}{{2 \sigma^2}} \sum_{i=1}^n (x_i - \mu)^2\]</span> Since the logarithm is an increasing function, the maximum of <span class="math inline">\(l\)</span> occurs at the same location <span class="math inline">\((\mu, \sigma)\)</span> as the maximum of <span class="math inline">\(L\)</span>.</p>
 <p>Use <code>optim()</code> with its default Nelder-Mead method to find the estimates of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> that maximize <span class="math inline">\(l\)</span> over the data <span class="math inline">\(x_1, \ldots, x_n =\)</span> <code>mtcars$mpg</code>. Check your <code>optim()</code> estimates by comparing them to the sample mean and (population) standard deviation.</p>
-<pre class="r"><code># ...</code></pre>
+<pre class="r"><code>mle &lt;- function(par, x) {
+  mu &lt;- par[1]
+  sigma &lt;- (par[2])
+  x = mtcars$mpg
+  n = length(x)
+  return(-(n*log(1/(sqrt(2*pi)*sigma)) - ((1/(2*(sigma)^2))*sum((x-mu)^2))))
+}
+
+optim(c(20, 6), mle, method = &quot;Nelder-Mead&quot;)</code></pre>
+<pre><code>## $par
+## [1] 20.089678  5.932745
+## 
+## $value
+## [1] 102.3778
+## 
+## $counts
+## function gradient 
+##       45       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<pre class="r"><code>mean(mtcars$mpg)</code></pre>
+<pre><code>## [1] 20.09062</code></pre>
+<pre class="r"><code>sd(mtcars$mpg)</code></pre>
+<pre><code>## [1] 6.026948</code></pre>
 </div>
 <div id="b-mle-for-the-parameters-beta_0-and-beta_1-in-logistic-regression" class="section level2">
 <h2>3(b) MLE for the parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in logistic regression</h2>
