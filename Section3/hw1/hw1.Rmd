@@ -106,7 +106,7 @@ d.robust.regr <- function(x) {
   n <- 50
   k <- 19000
   t <- (y - b0 - (b1*x))
-  d.db <- ifelse((abs(t) <= k), (t^2), (2*k*sign(t)))
+  d.db <- ifelse((abs(t) <= k), (2*t), (2*k*sign(t)))
   return(c(-(sum(d.db)/n), -(sum(x*d.db)/n)))
 }
 
@@ -199,7 +199,7 @@ forecast.error <- function(b) {
   return(sum((y - y.hat(y, b))^2)/60)
 }
 
-fore <- optimize(forecast.error, interval = c(0,1))
+fore <- optimize(forecast.error, interval = c(0,1), lower = min(c(0,1), upper = max(c(0,1))))
 fore$minimum     
 ```
 
@@ -209,7 +209,7 @@ b. Plot the yearly average measurements of temperature for New Hampshire, from 1
 y.hat.val <- y.hat(y = nhtemp, b= fore$minimum)
 
 plot(nhtemp)
-lines((fore$minimum * nhtemp)+((1 - fore$minimum)*y.hat.val), col = "blue") 
+lines(x = 1912:1971, y = y.hat.val, col = "blue") 
 ```
 
 c. Reproduce the previous plot, but include some other levels of smoothing, say $\beta=0.1$ and $\beta=0.9$. Use different colors and include a legend.
@@ -220,9 +220,9 @@ y.hat.1 <- y.hat(y = nhtemp, b= .1)
 y.hat.9 <- y.hat(y = nhtemp, b= .9)
 
 plot(nhtemp)
-lines((fore$minimum * nhtemp)+((1 - fore$minimum)*y.hat.val), col = "blue")
-lines((.1 * nhtemp)+((1 - .1)*y.hat.1), col = "red")
-lines((.9 * nhtemp)+((1 - .9)*y.hat.9), col = "green")
+lines(x = 1912:1971, y = y.hat.val, col = "blue") 
+lines(x = 1912:1971, y = y.hat.1, col = "red")
+lines(x = 1912:1971, y = y.hat.9, col = "green")
 legend("bottomright", legend = c("Y", "Min", ".1", ".9"), lty = c(1, 1, 1, 1), col = c("black" ,"blue", "red", "green"))
 ```
 
@@ -250,7 +250,7 @@ mle <- function(par, x) {
   return(-(n*log(1/(sqrt(2*pi)*sigma)) - ((1/(2*(sigma)^2))*sum((x-mu)^2))))
 }
 
-optim(c(1, 1), mle, method = "Nelder-Mead")
+optim(c(0, 1), mle, method = "Nelder-Mead")
 
 mean(mtcars$mpg)
 sd(mtcars$mpg)
@@ -317,9 +317,9 @@ p.b0.b1 <- function(x) {
   return((1/(1 + exp(-(mle.b0.b1$par[1] + (mle.b0.b1$par[2]*x))))))
 }
 
-curve(p.b0.b1, from = min(menarche.cases$age), to = max(menarche.cases$age))
-points(jitter(x = menarche.cases$age), y = menarche.cases$reached.menarche)
+plot(jitter(x = menarche.cases$age), y = jitter(menarche.cases$reached.menarche))
 points(x = menarche$Age, y = (menarche$Menarche/menarche$Total), col  = "red")
+curve(p.b0.b1, from = min(menarche.cases$age), to = max(menarche.cases$age), col="green", add = TRUE)
 ```
 
 (Note that R's `glm()` function can also find the required model. You must use `optim()`, as the goal is to practice with it. If you know `glm()`, you're welcome to use it to check your work.)
