@@ -15,29 +15,18 @@ lad <- function(x, y) {
   sad.function <- function(x, y, b) {
     b0 <- b[1]
     b1 <- b[2]
-    value <- y - b0 - (b1*x)
-    return((sum(abs(value))))
+    return(sum(abs(y - b0 - (b1*x))))
   }
   par <- lm(y ~ x)
-  optim(par = c(par$coefficients[1], par$coefficients[2]), fn = sad.function.loop, x = area$land, y = area$farm)
+  result <- optim(par = c(par$coefficients[1], par$coefficients[2]), fn = sad.function, x = area$land, y = area$farm)
 }
 
 # Test lm
-area <- read.csv("http://www.stat.wisc.edu/~jgillett/327-3/1/farmLandArea.csv")
-x = area$land
-y = area$farm
 lm(farm ~ land, data = area)
-
-sad.function.loop <- function(x, y, b) {
-  b0 <- b[1]
-  b1 <- b[2]
-  value <- list()
-  for (i in 50) {
-    value[i] <- (y[i] - b0 - (b1*x[i]))
-    }
-  return(-(sum(abs(value))))
-}
-
-for i in  {
-  value <- (y[i] - b0 - (b1*x[i]))
-}
+area <- read.csv("http://www.stat.wisc.edu/~jgillett/327-3/1/farmLandArea.csv")
+x = as.numeric(area$land)
+y = as.numeric(area$farm)
+b <- c(1,2)
+plot(x = x, y = y)
+abline(a = par$coefficients[1], b = par$coefficients[2])
+abline(a = result$par[1], b = result$par[2], col = "green")
