@@ -10,5 +10,5 @@
 #' f(x)
 #'
 print.lad <- function(x) {
-  cat(sep = "", "Intercet: ", x$coefficient[1], "\n", "Slope: ", x$coefficient[2])
+  cat(sep = "", "Intercet", "\n",x$coefficient[1], "\n", "\n", "Slope", "\n", x$coefficient[2])
 }
