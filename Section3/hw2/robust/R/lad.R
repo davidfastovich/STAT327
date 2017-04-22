@@ -26,6 +26,7 @@ lad <- function(x, y) {
   par <- lm(y ~ x)
   value <- optim(par = c(par$coefficients[1], par$coefficients[2]), fn = sad.function, x = area$land, y = area$farm)
   results$coefficients <- c(value$par[1], value$par[2])
+  results$coefficients <- coef(results)
   results$fitted.values <- predict.func(x, y, c(results$coefficients[1], results$coefficients[2]))
   results$residuals <- y - results$fitted.value
   return(results)
