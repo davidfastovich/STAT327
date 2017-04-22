@@ -10,23 +10,23 @@
 #' f(x)
 #'
 lad <- function(x, y) {
-  new <- vector()
-  class(new) <- "lad"
+  results <- list()
+  class(results) <- "lad"
+  
   sad.function <- function(x, y, b) {
     b0 <- b[1]
     b1 <- b[2]
     return(sum(abs(y - b0 - (b1*x))))
   }
+  
+  predict.func <- function(x, y, b) {
+    return(y.hat <- b[1] + b[2]*x)
+  }
+  
   par <- lm(y ~ x)
-  result <- optim(par = c(par$coefficients[1], par$coefficients[2]), fn = sad.function, x = area$land, y = area$farm)
+  value <- optim(par = c(par$coefficients[1], par$coefficients[2]), fn = sad.function, x = area$land, y = area$farm)
+  results$coefficients <- c(value$par[1], value$par[2])
+  results$fitted.value <- predict.func(x, y, c(results$coefficients[1], results$coefficients[2]))
+  results$residuals <- y - results$fitted.value
+  return(results)
 }
-
-# Test lm
-lm(farm ~ land, data = area)
-area <- read.csv("http://www.stat.wisc.edu/~jgillett/327-3/1/farmLandArea.csv")
-x = as.numeric(area$land)
-y = as.numeric(area$farm)
-b <- c(1,2)
-plot(x = x, y = y)
-abline(a = par$coefficients[1], b = par$coefficients[2])
-abline(a = result$par[1], b = result$par[2], col = "green")
