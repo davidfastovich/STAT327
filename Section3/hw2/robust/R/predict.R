@@ -11,8 +11,6 @@
 #'
 predict.lad <- function(x) {
   value <- x$fitted.value
-  names(value) <- 1:seq_len(x$fitted.values)
+  names(value) <- 1:length(x$fitted.values)
   return(value)
 }
-
-predicted.vals <- predict(test.fit)
