@@ -1,12 +1,11 @@
-#' (title at top of help page)
+#' Data of land area and farm area of all 50 US states
 #'
-#' (Description paragraph)
-#' @param x (description of x; one line per parameter: Arguments section)
-#' @return (Value section)
-#' @details (Details section)
+#' Data containing the name of the state, its respective land area, and its respective farm area.
+#' @return Data frame containing columns \code{state}, \code{land}, \code{farm} 
 #' @export
 #' @examples
-#' # (Examples section)
-#' f(x)
+#' x <- area
+#' 
+#' area
 #'
 read.csv("http://www.stat.wisc.edu/~jgillett/327-3/2/farmLandArea.csv")
