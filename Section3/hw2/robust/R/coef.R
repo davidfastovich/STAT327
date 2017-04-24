@@ -1,13 +1,16 @@
-#' (title at top of help page)
+#' Add least absolute deviations regression line
 #'
-#' (Description paragraph)
-#' @param x (description of x; one line per parameter: Arguments section)
-#' @return (Value section)
-#' @details (Details section)
+#' This function allows ceofficients from the \code{lad} function to be plotted onto an existing plot.
+#' @param x LAD class object
+#' @return %B_0% and %B_1% of LAD regression
+#' @details Typical usage is \code{abline(results)}
 #' @export
 #' @examples
-#' # (Examples section)
-#' f(x)
+#' results <- lad(x = area$land, y = area$farm)
+#' plot(x = area$land, y = area$farm)
+#' abline(results)
+#' 
+#' coef(results)
 #'
 coef.lad <- function(x) {
   a <- x$coefficient[1]

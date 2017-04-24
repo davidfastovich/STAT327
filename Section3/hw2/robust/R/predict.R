@@ -1,9 +1,9 @@
 #' Predict function for LAD class object
 #'
-#' Written to explicitely on objects from the least absolute deviations (LAD) regression fucntion
+#' Written to explicitely on objects from the least absolute deviations (LAD) regression fucntion.
 #' @param x LAD class object
 #' @param new.x Vector of new %x% values to generate a vector of new %Y_hat% values 
-#' @return %Y_hat% A vector of predicted values using coefficients from LAD
+#' @return %Y_hat% A vector of predicted values using coefficients from LAD.
 #' @det
 #' @export
 #' @examples
