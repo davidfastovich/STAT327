@@ -9,3 +9,4 @@
 #' area
 #'
 read.csv("http://www.stat.wisc.edu/~jgillett/327-3/2/farmLandArea.csv")
+  

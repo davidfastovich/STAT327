@@ -1,12 +1,11 @@
 #' Least absolute deviations (LAD) regression
 #'
 #' This function performs and optimization using the Nelder-Mead method to find the regression coefficients of two objects. 
-#' This method minimizes the sum of absolution deviations of data %y_i% from predictions %y_{hat}i%. The equation is as follows:
-#' \deqn{sum(abs(y - \beta_0 - (\beta_1*x))}
+#' This method minimizes the sum of absolution deviations of data $y_i$ from predictions $y_{o}i$. The equation is as follows:
+#' \deqn{sum(abs(y - beta_0 - (beta_1*x))}
 #' @param x The predictor variable of a data frame used for regression.
 #' @param y The response variable of a data fro mused for regression.
 #' @return Returns a list containing regression coefficients, fitted values, and residuals.
-#' @export
 #' @examples
 #' results <- lad(x = area$land, y = area$farm)
 #' print(results)
@@ -27,7 +26,7 @@ lad <- function(x, y) {
   }
   
   predict.func <- function(x, y, b) {
-    return(y.hat <- b[1] + b[2]*x)
+    return(y. <- b[1] + b[2]*x)
   }
   
   par <- lm(y ~ x)
