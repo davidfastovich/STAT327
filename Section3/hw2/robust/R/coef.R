@@ -2,7 +2,7 @@
 #'
 #' This is a function allows ceofficients from the \code{lad} function to be plotted onto an existing plot.
 #' @param x LAD class object
-#' @return %B_0% and %B_1% of LAD regression
+#' @return %\beta_0% and %\beta_1% of LAD regression
 #' @details Typical usage is \code{abline(results)}
 #' @export
 #' @examples

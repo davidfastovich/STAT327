@@ -13,7 +13,9 @@ x <- area$land
 y <- area$farm
 test.fit <- lm(y ~ x)
 
-results <- lad(x, y)
+results<- lad(x, y)
+predict(results)
+predict(results, new.x = 1:10)
 print(results)
 coef(results)
 plot(x = x, y = y)
