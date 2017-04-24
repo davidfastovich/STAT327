@@ -3,4 +3,4 @@
 S3method(coef,lad)
 S3method(predict,lad)
 S3method(print,lad)
-export()
+export(lad)

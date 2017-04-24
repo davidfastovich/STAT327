@@ -20,6 +20,9 @@ build(pkg="robust")
 # Installing package
 install.packages(pkgs="robust_0.0.0.9000.tar.gz", repos = NULL, type = "source")
 
+# Remove package
+remove.packages("robust")
+
 # Testing function
 area <- read.csv("http://www.stat.wisc.edu/~jgillett/327-3/2/farmLandArea.csv")
 x <- area$land

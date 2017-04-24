@@ -5,6 +5,7 @@
 #' @param x The predictor variable of a data frame used for regression.
 #' @param y The response variable of a data fro mused for regression.
 #' @return Returns a list containing regression coefficients, fitted values, and residuals.
+
 #' @examples
 #' results <- lad(x = area$land, y = area$farm)
 #' print(results)
@@ -13,6 +14,8 @@
 #' abline(lm(area$farm ~ area$land), col = "green")
 #' abline(results, col = "blue")
 #' legend("bottomright", legend = c("lm", "LAD"), lty = c(1, 1), col = c("green", "blue"))
+#' 
+#' @export
 #'
 lad <- function(x, y) {
   results <- list()
