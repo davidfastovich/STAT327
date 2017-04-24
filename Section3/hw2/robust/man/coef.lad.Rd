@@ -10,7 +10,7 @@
 \item{x}{LAD class object}
 }
 \value{
-\beta_0 and \beta_1 of LAD regression
+beta_0 and beta_1 of LAD regression
 }
 \description{
 This is a function allows ceofficients from the \code{lad} function to be plotted onto an existing plot.

@@ -16,8 +16,7 @@ Returns a list containing regression coefficients, fitted values, and residuals.
 }
 \description{
 This function performs and optimization using the Nelder-Mead method to find the regression coefficients of two objects. 
-This method minimizes the sum of absolution deviations of data $y_i$ from predictions $y_{o}i$. The equation is as follows:
-\deqn{sum(abs(y - \beta_0 - (\beta_1*x))}
+This method minimizes the sum of absolution deviations of data X from predictions of Y.
 }
 \examples{
 results <- lad(x = area$land, y = area$farm)
