@@ -10,6 +10,11 @@
 #' @examples
 #' results <- lad(x = area$land, y = area$farm)
 #' print(results)
+#' 
+#' plot(x = area$land, y = area$farm)
+#' abline(lm(area$farm ~ area$land), col = "green")
+#' abline(results, col = "blue")
+#' legend("bottomright", legend = c("lm", "LAD"), lty = c(1, 1), col = c("green", "blue"))
 #'
 lad <- function(x, y) {
   results <- list()
