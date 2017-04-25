@@ -72,4 +72,38 @@ abline(lad(x = mtcars$mpg, y = mtcars$hp), col = "green")
 
 plot(x = iris$Petal.Length, y = iris$Sepal.Length)
 abline(lm(iris$Sepal.Length ~ iris$Petal.Length))
-abline(lad(x = iris$Petal.Length, y = iris$Sepal.Length))
+abline(lad(x = iris$Petal.Length, y = iris$Sepal.Length), col = "green")
+
+require(graphics)
+
+## Annette Dobson (1990) "An Introduction to Generalized Linear Models".
+## Page 9: Plant Weight Data.
+ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
+weight <- c(ctl, trt)
+lm(weight ~ group)
+lad(x = as.numeric(group), y = as.numeric(weight))
+
+## Setup up coordinate system (with x == y aspect ratio):
+plot(c(-2,3), c(-1,5), type = "n", xlab = "x", ylab = "y", asp = 1)
+## the x- and y-axis, and an integer grid
+abline(h = 0, v = 0, col = "gray60")
+text(1,0, "abline( h = 0 )", col = "gray60", adj = c(0, -.1))
+abline(h = -1:5, v = -2:3, col = "lightgray", lty = 3)
+abline(a = 1, b = 2, col = 2)
+text(1,3, "abline( 1, 2 )", col = 2, adj = c(-.1, -.1))
+
+## Simple Regression Lines:
+require(stats)
+sale5 <- c(6, 4, 9, 7, 6, 12, 8, 10, 9, 13)
+plot(sale5)
+abline(lsfit(1:10, sale5))
+abline(lsfit(1:10, sale5, intercept = FALSE), col = 4) # less fitting
+abline(lad(x = 1:10, y = sale5))
+
+z <- lm(dist ~ speed, data = cars)
+plot(cars)
+abline(z) # equivalent to abline(reg = z) or
+abline(lad(x = cars$speed, y = cars$dist))
+abline(coef = coef(z))
