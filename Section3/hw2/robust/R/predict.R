@@ -20,7 +20,7 @@ predict.lad <- function(x,new.x = FALSE) {
     } else {
     predict.func <- function(new.x) {
       b <- x$coefficients
-      y.hat <- b[1] + b[2]*new.x
+      y.hat <- b[1] + b[2]*as.numeric(new.x)
       names(y.hat) <- 1:length(new.x)
       return(y.hat)
       }

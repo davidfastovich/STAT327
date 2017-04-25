@@ -26,11 +26,11 @@ lad <- function(x, y) {
   sad.function <- function(x, y, b) {
     b0 <- b[1]
     b1 <- b[2]
-    return(sum(abs(y - b0 - (b1*x))))
+    return(sum(abs(as.numeric(y) - b0 - (b1*as.numeric(x)))))
   }
   
   predict.func <- function(x, y, b) {
-    return(y. <- b[1] + b[2]*x)
+    return(y.hat <- b[1] + b[2]*as.numeric(x))
   }
   
   par <- lm(y ~ x)

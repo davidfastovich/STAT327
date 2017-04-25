@@ -52,3 +52,24 @@ points(x = quant.area, y = new.y, col = "green", pch = 16)
 
 legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
 
+# Tests performed by profs
+install.packages(pkgs="robust_0.1.tar.gz", repos=NULL, type="source")
+require("robust")
+example(lad)
+?lad
+?area
+?print.lad
+?coef.lad
+?predict.lad
+
+print(lad(x=area$land, y=area$farm))
+
+# Additional tests
+require(robust)
+plot(x = mtcars$mpg, y = mtcars$hp)
+abline(lm(mtcars$hp ~ mtcars$mpg))
+abline(lad(x = mtcars$mpg, y = mtcars$hp), col = "green")
+
+plot(x = iris$Petal.Length, y = iris$Sepal.Length)
+abline(lm(iris$Sepal.Length ~ iris$Petal.Length))
+abline(lad(x = iris$Petal.Length, y = iris$Sepal.Length))
