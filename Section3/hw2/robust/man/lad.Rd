@@ -7,24 +7,27 @@
 lad(x, y)
 }
 \arguments{
-\item{x}{The predictor variable of a data frame used for regression.}
-
-\item{y}{The response variable of a data fro mused for regression.}
+\item{x}{The predictor variable of a data frame used for regression.
+y The response variable of a data fro mused for regression.}
 }
 \value{
 Returns a list containing regression coefficients, fitted values, and residuals.
 }
 \description{
-This function performs and optimization using the Nelder-Mead method to find the regression coefficients of two objects. 
-This method minimizes the sum of absolution deviations of data X from predictions of Y.
+This function performs and optimization using the Nelder-Mead method to find the regression coefficients of two objects. This method minimizes the sum of absolution deviations of data X from predictions of Y.
 }
 \examples{
 results <- lad(x = area$land, y = area$farm)
 print(results)
 
 plot(x = area$land, y = area$farm)
-abline(lm(area$farm ~ area$land), col = "green")
+abline(lm(area$farm ~ area$land), col = "coral")
 abline(results, col = "blue")
-legend("bottomright", legend = c("lm", "LAD"), lty = c(1, 1), col = c("green", "blue"))
+
+quant.land <- c(quantile(area$land, 0), quantile(area$land, .25), quantile(area$land, .5), quantile(area$land, .75), quantile(area$land, 1))
+new.y <- predict(results, new.x = quant.land)
+points(x = quant.land, y = new.y, col = "green", pch = 16)
+
+legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
 
 }
