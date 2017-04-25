@@ -36,3 +36,19 @@ print(results)
 coef(results)
 plot(x = x, y = y)
 abline(results)
+
+# Testing LAD example
+rm(list = ls())
+results <- lad(x = area$land, y = area$farm)
+print(results)
+
+plot(x = area$land, y = area$farm)
+abline(lm(area$farm ~ area$land), col = "coral")
+abline(results, col = "blue")
+
+quant.area <- c(quantile(area$land, 0), quantile(area$land, .25), quantile(area$land, .5), quantile(area$land, .75), quantile(area$land, 1))
+new.y <- predict(results, new.x = quant.area)
+points(x = quant.area, y = new.y, col = "green", pch = 16)
+
+legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
+

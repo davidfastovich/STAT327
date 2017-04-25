@@ -10,9 +10,14 @@
 #' print(results)
 #' 
 #' plot(x = area$land, y = area$farm)
-#' abline(lm(area$farm ~ area$land), col = "green")
+#' abline(lm(area$farm ~ area$land), col = "coral")
 #' abline(results, col = "blue")
-#' legend("bottomright", legend = c("lm", "LAD"), lty = c(1, 1), col = c("green", "blue"))
+#' 
+#' quant.land <- c(quantile(area$land, 0), quantile(area$land, .25), quantile(area$land, .5), quantile(area$land, .75), quantile(area$land, 1))
+#' new.y <- predict(results, new.x = quant.land)
+#' points(x = quant.land, y = new.y, col = "green", pch = 16)
+#'
+#' legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
 #'
 lad <- function(x, y) {
   results <- list()
