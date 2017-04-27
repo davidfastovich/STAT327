@@ -4,10 +4,12 @@
 \alias{print.lad}
 \title{Print LAD object coefficients}
 \usage{
-\method{print}{lad}(x)
+\method{print}{lad}(x, ...)
 }
 \arguments{
 \item{x}{An object from the \code{lad} function.}
+
+\item{...}{Additional arguments.}
 }
 \value{
 Regression coefficients to the console.

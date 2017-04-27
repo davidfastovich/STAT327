@@ -4,10 +4,12 @@
 \alias{coef.lad}
 \title{Add least absolute deviations regression line}
 \usage{
-\method{coef}{lad}(x)
+\method{coef}{lad}(object, ...)
 }
 \arguments{
-\item{x}{LAD class object}
+\item{object}{LAD class object}
+
+\item{...}{Additional arguments}
 }
 \value{
 beta_0 and beta_1 of LAD regression

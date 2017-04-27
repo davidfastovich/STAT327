@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("David", "Fastovich", email = "fastovich@wisc.edu", role =  c("aut", "cre"))
 Description: Performs robust regressions using the least absolute deviations method.
 Depends: R (>= 3.3.1)
-License: What license is it under?
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1

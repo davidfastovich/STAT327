@@ -83,7 +83,7 @@ trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
 group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
 weight <- c(ctl, trt)
 lm(weight ~ group)
-lad(x = as.numeric(group), y = as.numeric(weight))
+lad(x = group, y = weight)
 
 ## Setup up coordinate system (with x == y aspect ratio):
 plot(c(-2,3), c(-1,5), type = "n", xlab = "x", ylab = "y", asp = 1)

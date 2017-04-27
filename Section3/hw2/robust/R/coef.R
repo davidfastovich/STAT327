@@ -1,7 +1,8 @@
 #' Add least absolute deviations regression line
 #'
 #' This is a function allows ceofficients from the \code{lad} function to be plotted onto an existing plot.
-#' @param x LAD class object
+#' @param object LAD class object
+#' @param ... Additional arguments
 #' @return beta_0 and beta_1 of LAD regression
 #' @details Typical usage is \code{abline(results)}
 #' @export
@@ -12,8 +13,8 @@
 #' 
 #' coef(results)
 #'
-coef.lad <- function(x) {
-  a <- x$coefficient[1]
-  b <- x$coefficient[2]
+coef.lad <- function(object, ...) {
+  a <- object$coefficient[1]
+  b <- object$coefficient[2]
   return(c(a, b))
 }

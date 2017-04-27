@@ -7,8 +7,9 @@
 lad(x, y)
 }
 \arguments{
-\item{x}{The predictor variable of a data frame used for regression.
-y The response variable of a data fro mused for regression.}
+\item{x}{The predictor variable of a data frame used for regression.}
+
+\item{y}{The response variable of a data fro mused for regression.}
 }
 \value{
 Returns a list containing regression coefficients, fitted values, and residuals.
@@ -24,10 +25,13 @@ plot(x = area$land, y = area$farm)
 abline(lm(area$farm ~ area$land), col = "coral")
 abline(results, col = "blue")
 
-quant.land <- c(quantile(area$land, 0), quantile(area$land, .25), quantile(area$land, .5), quantile(area$land, .75), quantile(area$land, 1))
+quant.land <- c(quantile(area$land, 0), 
+quantile(area$land, .25), quantile(area$land, .5), 
+quantile(area$land, .75), quantile(area$land, 1))
 new.y <- predict(results, new.x = quant.land)
 points(x = quant.land, y = new.y, col = "green", pch = 16)
 
-legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
+legend("bottomright", legend = c("lm", "LAD", "Predicted Quantiles"), 
+lty = c(1, 1, NA), pch = c(NA, NA, 16), col = c("coral", "blue", "green"))
 
 }

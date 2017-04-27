@@ -4,12 +4,14 @@
 \alias{predict.lad}
 \title{Predict function for LAD class object}
 \usage{
-\method{predict}{lad}(x, new.x = FALSE)
+\method{predict}{lad}(object, new.x = FALSE, ...)
 }
 \arguments{
-\item{x}{LAD class object}
+\item{object}{LAD class object}
 
 \item{new.x}{Vector of new x values to generate a vector of new Y_hat values}
+
+\item{...}{Additional arguments.}
 }
 \value{
 Y_hat A vector of predicted values using coefficients from LAD.
