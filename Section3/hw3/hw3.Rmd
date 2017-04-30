@@ -4,5 +4,55 @@ output: html_document
 ---
 
 ```{r}
+if (!require("png")) {
+  install.packages("png")
+  stopifnot(require("png"))
+}
 
+str(vg <- readPNG("Van_Gogh.png"))
+dim(vg)
+
+red.vg <- vg[,,1]
+green.vg <- vg[,,2]
+blue.vg <- vg[,,3]
+str(blue.vg)
+
+layout(matrix(1:3, ncol=3))
+image(t(red.vg[nrow(red.vg):1,]), col = gray((1:12)/13), main="Red channel")
+image(t(green.vg[nrow(green.vg):1,]), col = gray((1:12)/13), main="Green channel")
+image(t(blue.vg[nrow(blue.vg):1,]), col = gray((1:12)/13), main="Blue channel")
+```
+
+```{r}
+par.chan.filtering <- function(x, k) {
+  dim.x <- dim(x)
+  pad.X <- matrix(0, dim.x[1]+2*k, dim.x[2]+2*k)
+  pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
+  for(i in 2:((dim(pad.X)[1]) - 1)) {
+    for(j in 2:((dim(pad.X)[2]) - 1)) {
+      test.case <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
+      test <- rbind(test, test.case)
+    }
+  }
+}
+```
+
+```{r}
+X <- matrix(c(.5,.5,.4,.4,.3,.5,.5,.4,.3,.3,.4,.4,.3,.2,.2,.4,.4,.3,.2,.1,.3,.3,.2,.2,.1), ncol=5)
+X
+
+k <- 1
+pad.X <- matrix(0, dim(X)[1]+2*k, dim(X)[2]+2*k)
+pad.X[(k+1):(dim(X)[1]+k), (k+1):(dim(X)[2]+k)] <- X
+pad.X
+
+# locations <- expand.grid(x = 1:(dim(pad.X)[1]), y = 1:(dim(pad.X)[2]))
+test <- list()
+for(i in 2:((dim(pad.X)[1]) - 1)) {
+  for(j in 2:((dim(pad.X)[2]) - 1)) {
+    test.case <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
+    test <- rbind(test, test.case)
+  }
+}
+mean(pad.X)
 ```
