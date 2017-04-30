@@ -28,12 +28,13 @@ par.chan.filtering <- function(x, k) {
   dim.x <- dim(x)
   pad.X <- matrix(0, dim.x[1]+2*k, dim.x[2]+2*k)
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
+  filtered.mat <- matrix(0, dim.x[1], dim.x[2])
   for(i in 2:((dim(pad.X)[1]) - 1)) {
     for(j in 2:((dim(pad.X)[2]) - 1)) {
-      test.case <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
-      test <- rbind(test, test.case)
+      filtered.mat[i-1, j-1] <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
     }
   }
+  return(filtered.mat)
 }
 ```
 
@@ -47,11 +48,10 @@ pad.X[(k+1):(dim(X)[1]+k), (k+1):(dim(X)[2]+k)] <- X
 pad.X
 
 # locations <- expand.grid(x = 1:(dim(pad.X)[1]), y = 1:(dim(pad.X)[2]))
-test <- list()
+test <- matrix(0, dim.x[1], dim.x[2])
 for(i in 2:((dim(pad.X)[1]) - 1)) {
   for(j in 2:((dim(pad.X)[2]) - 1)) {
-    test.case <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
-    test <- rbind(test, test.case)
+    test[i-1, j-1] <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
   }
 }
 mean(pad.X)
