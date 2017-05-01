@@ -26,10 +26,10 @@ par.chan.filtering <- function(x, k) {
   dim.x <- dim(x)
   pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
-  filtered.mat <- matrix(0, dim.x[1], dim.x[2])
-  for(i in 2:((dim(pad.X)[1]) - 1)) {
-    for(j in 2:((dim(pad.X)[2]) - 1)) {
-      filtered.mat[i-1, j-1] <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
+  filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
+  for(row in (k+1):(dim.x[1]+k)) {
+    for(col in (k+1):(dim.x[2]+k)) {
+      filtered.mat[row, col] <- mean(pad.X[(row-k):(row+k),(col-k:col+k)])
     }
   }
   return(filtered.mat)
