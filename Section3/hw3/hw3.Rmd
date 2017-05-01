@@ -33,8 +33,13 @@ par.chan.filtering <- function(x, k) {
     }
   }
   unpadded.mat <- filtered.mat[seq_len(dim.x[1]) + k, seq_len(dim.x[2]) + k]
-  return(filtered.mat)
+  return(unpadded.mat)
 }
+```
+
+Making function to remove padding
+```{r}
+
 ```
 
 Have to make one function that can be applied in parallel
