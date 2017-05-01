@@ -1,13 +1,10 @@
----
-title: "hw3"
-output: html_document
----
+Name: David Fastovich
+Email: fastovich@wisc.edu
 
+Loading required packages
 ```{r}
-if (!require("png")) {
-  install.packages("png")
-  stopifnot(require("png"))
-}
+require("png")
+require("parallel")
 
 str(vg <- readPNG("Van_Gogh.png"))
 dim(vg)
@@ -23,10 +20,11 @@ image(t(green.vg[nrow(green.vg):1,]), col = gray((1:12)/13), main="Green channel
 image(t(blue.vg[nrow(blue.vg):1,]), col = gray((1:12)/13), main="Blue channel")
 ```
 
+Filtering function
 ```{r}
-par.chan.filtering <- function(x, k) {
+par.chan.filtering <- function(x, k = 1) {
   dim.x <- dim(x)
-  pad.X <- matrix(0, dim.x[1]+2*k, dim.x[2]+2*k)
+  pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
   filtered.mat <- matrix(0, dim.x[1], dim.x[2])
   for(i in 2:((dim(pad.X)[1]) - 1)) {
@@ -38,21 +36,10 @@ par.chan.filtering <- function(x, k) {
 }
 ```
 
+Implementing function on Madison.png using 3 cores
 ```{r}
-X <- matrix(c(.5,.5,.4,.4,.3,.5,.5,.4,.3,.3,.4,.4,.3,.2,.2,.4,.4,.3,.2,.1,.3,.3,.2,.2,.1), ncol=5)
-X
-
-k <- 1
-pad.X <- matrix(0, dim(X)[1]+2*k, dim(X)[2]+2*k)
-pad.X[(k+1):(dim(X)[1]+k), (k+1):(dim(X)[2]+k)] <- X
-pad.X
-
-# locations <- expand.grid(x = 1:(dim(pad.X)[1]), y = 1:(dim(pad.X)[2]))
-test <- matrix(0, dim.x[1], dim.x[2])
-for(i in 2:((dim(pad.X)[1]) - 1)) {
-  for(j in 2:((dim(pad.X)[2]) - 1)) {
-    test[i-1, j-1] <- ((pad.X[i-1, j-1] + pad.X[i-1, j] + pad.X[i-1, j+1] + pad.X[i, j-1] + pad.X[i, j] + pad.X[i, j+1] + pad.X[i+1, j-1] + pad.X[i+1, j] + pad.X[i+1, j+1])/9)
-  }
-}
-mean(pad.X)
+n.cores <- detectCores()
+cluster <- makePSOCKcluster(names=n.cores)
+clusterEvalQ(cl = cluster)
+apply(red.vg, MARGIN = c(1,2),FUN = par.chan.filtering)
 ```
