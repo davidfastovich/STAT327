@@ -22,7 +22,7 @@ image(t(blue.vg[nrow(blue.vg):1,]), col = gray((1:12)/13), main="Blue channel")
 
 Filtering function
 ```{r}
-par.chan.filtering <- function(x, k = 1) {
+par.chan.filtering <- function(x, k) {
   dim.x <- dim(x)
   pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
@@ -36,10 +36,26 @@ par.chan.filtering <- function(x, k = 1) {
 }
 ```
 
+Have to make one function that can be applied in parallel
+```{r}
+filter.image <- function(x, k) {
+  vg <- readPNG(x)
+  red.vg <- vg[,,1]
+  green.vg <- vg[,,2]
+  blue.vg <- vg[,,3]
+  red.filtered <- par.chan.filtering(red.vg)
+  blue.filtered <- par.chan.filtering(blue.vg)
+  green.filtered <- par.chan.filtering(green.vg)
+  img.array <- array(c(red.filtered, green.filtered, blue.filtered), dim = c(dim(red.filtered)[1], dim(red.filtered)[2], 3))
+  filename <- paste(sep = "", "fastovich_", k,".png")
+  return(writePNG(img.array, filename))
+}
+```
+
 Implementing function on Madison.png using 3 cores
 ```{r}
 n.cores <- detectCores()
 cluster <- makePSOCKcluster(names=n.cores)
 clusterEvalQ(cl = cluster)
-apply(red.vg, MARGIN = c(1,2),FUN = par.chan.filtering)
+lapply(image(red.filtered, green.filtered, blue.filtered), FUN = filter.image, k = 1)
 ```
