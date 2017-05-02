@@ -38,5 +38,34 @@ persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
 
 # Finding a local maximum
 max1 <- optim(par = c(0,0), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+max2 <- optim(par = c(-100, -100), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
 persp3d(x = grid.x, y = grid.y, z = z, col = "light blue") 
 points3d(x = max1$par[1], y = max1$par[2], z = max1$value, col = "red")
+points3d(x = max2$par[1], y = max2$par[2], z = max2$value, col = "red")
+
+# Loop to test all possible parameter combinations based on the grid I made eariler and then bind it to one data frame
+all.max <- data.frame(x = numeric(), y = numeric(), z = numeric())
+for (i in 1:120) {
+  max1 <- optim(par = c(i, i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+  max2 <- optim(par = c(i, -i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+  max3 <- optim(par = c(-i, i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+  max4 <- optim(par = c(-i, -i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+  max1.data <- data.frame(x = max1$par[1], y = max1$par[2], z = max1$value)
+  max2.data <- data.frame(x = max2$par[1], y = max2$par[2], z = max2$value)
+  max3.data <- data.frame(x = max3$par[1], y = max3$par[2], z = max3$value)
+  max4.data <- data.frame(x = max4$par[1], y = max4$par[2], z = max4$value)
+  all.max <- rbind(all.max, max1.data)
+  all.max <- rbind(all.max, max2.data)
+  all.max <- rbind(all.max, max3.data)
+  all.max <- rbind(all.max, max4.data)
+}
+
+# Plotting all results
+persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
+points3d(x = all.max$x, y = all.max$y, z = all.max$z, col = "red")
+
+# Max value
+order(all.max$z, decreasing = TRUE)
+points3d(x = all.max[395, ][[1]], y = all.max[395, ][[2]], z = all.max[395, ][[3]], col = "green")
+
+# 
