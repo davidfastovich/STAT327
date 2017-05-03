@@ -22,8 +22,8 @@ image(t(blue.vg[nrow(blue.vg):1,]), col = gray((1:12)/13), main="Blue channel")
 
 Filtering function
 ```{r}
-par.chan.filtering <- function(x, k) {
-  dim.x <- dim(x)
+par.chan.filtering <- function(x, k, dim.x) {
+  # dim.x <- dim(x)
   pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
   filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
@@ -61,4 +61,7 @@ n.cores <- detectCores()
 cluster <- makePSOCKcluster(names=n.cores)
 clusterEvalQ(cl = cluster)
 clusterMap(cl = cluster, fun = filter.image, )
+lapply(red.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(red.vg))
+lapply(green.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(green.vg))
+lapply(blue.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(blue.vg))
 ```
