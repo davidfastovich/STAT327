@@ -40,29 +40,14 @@ par.chan.filtering <- function(x, k) {
 Have to make one function that can be applied in parallel
 ```{r}
 filter.image <- function(x, k) {
-  # vg <- readPNG(x)
   filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim(vg)[1],dim(vg)[2],dim(vg)[3]))
   for (i in 1:3) {
     filtered.array[,,i] <- par.chan.filtering(vg[,,i], k = k)
   }
-  # red.filtered <- par.chan.filtering(red.vg, k = k)
-  # blue.filtered <- par.chan.filtering(blue.vg, k = k)
-  # green.filtered <- par.chan.filtering(green.vg, k = k)
-  # img.array <- array(data = c(filtered.array[,,1], filtered.array[,,2], filtered.array[,,3]), dim = c(dim(vg)[1], dim(vg)[2], 3))
   filename <- paste(sep = "", "fastovich_", k, ".png")
   return(writePNG(filtered.array, filename))
 }
   
-```
-
-Got the idea of building a function that loops based on the index (i)
-```{r}
-filter.image <- function(x, k) {
-  vg <- readPNG(x)
-  for (i in 1:3) {
-    
-  }
-}
 ```
 
 Implementing function on Madison.png using 3 cores
