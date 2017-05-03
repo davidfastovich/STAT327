@@ -29,7 +29,7 @@ par.chan.filtering <- function(x, k) {
   filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
   for(row in (k+1):(dim.x[1]+k)) {
     for(col in (k+1):(dim.x[2]+k)) {
-      filtered.mat[row, col] <- mean(pad.X[(row-k):(row+k),(col-k:col+k)])
+      filtered.mat[row, col] <- mean(pad.X[(row-k):(row+k),(col-k):(col+k)])
     }
   }
   unpadded.mat <- filtered.mat[seq_len(dim.x[1]) + k, seq_len(dim.x[2]) + k]
@@ -37,24 +37,31 @@ par.chan.filtering <- function(x, k) {
 }
 ```
 
-Making function to remove padding
-```{r}
-
-```
-
 Have to make one function that can be applied in parallel
 ```{r}
 filter.image <- function(x, k) {
+  # vg <- readPNG(x)
+  filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim(vg)[1],dim(vg)[2],dim(vg)[3]))
+  for (i in 1:3) {
+    filtered.array[,,i] <- par.chan.filtering(vg[,,i], k = k)
+  }
+  # red.filtered <- par.chan.filtering(red.vg, k = k)
+  # blue.filtered <- par.chan.filtering(blue.vg, k = k)
+  # green.filtered <- par.chan.filtering(green.vg, k = k)
+  # img.array <- array(data = c(filtered.array[,,1], filtered.array[,,2], filtered.array[,,3]), dim = c(dim(vg)[1], dim(vg)[2], 3))
+  filename <- paste(sep = "", "fastovich_", k, ".png")
+  return(writePNG(filtered.array, filename))
+}
+  
+```
+
+Got the idea of building a function that loops based on the index (i)
+```{r}
+filter.image <- function(x, k) {
   vg <- readPNG(x)
-  red.vg <- vg[,,1]
-  green.vg <- vg[,,2]
-  blue.vg <- vg[,,3]
-  red.filtered <- par.chan.filtering(red.vg, k = k)
-  blue.filtered <- par.chan.filtering(blue.vg, k = k)
-  green.filtered <- par.chan.filtering(green.vg, k = k)
-  img.array <- array(c(red.filtered, green.filtered, blue.filtered), dim = c(dim(red.filtered)[1], dim(red.filtered)[2], 3))
-  filename <- paste(sep = "", "fastovich_", k,".png")
-  return(writePNG(img.array, filename))
+  for (i in 1:3) {
+    
+  }
 }
 ```
 
@@ -63,5 +70,5 @@ Implementing function on Madison.png using 3 cores
 n.cores <- detectCores()
 cluster <- makePSOCKcluster(names=n.cores)
 clusterEvalQ(cl = cluster)
-lapply(image(red.filtered, green.filtered, blue.filtered), FUN = filter.image, k = 1)
+print(system.time(lapply(vg, filter.image, k = 1)))
 ```
