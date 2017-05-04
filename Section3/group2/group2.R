@@ -44,21 +44,13 @@ points3d(x = max1$par[1], y = max1$par[2], z = max1$value, col = "red")
 points3d(x = max2$par[1], y = max2$par[2], z = max2$value, col = "red")
 
 # Loop to test all possible parameter combinations based on the grid I made eariler and then bind it to one data frame
+x <- seq(-120, 120, 10)
 all.max <- data.frame(x = numeric(), y = numeric(), z = numeric())
-for (i in -120:120) {
-  for (j in -120:120) {
+for (i in x) {
+  for (j in x) {
     max1 <- optim(par = c(i, j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-    # max2 <- optim(par = c(i, -j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-    # max3 <- optim(par = c(-i, j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-    # max4 <- optim(par = c(-i, -j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
     max1.data <- data.frame(x = max1$par[1], y = max1$par[2], z = max1$value)
-    # max2.data <- data.frame(x = max2$par[1], y = max2$par[2], z = max2$value)
-    # max3.data <- data.frame(x = max3$par[1], y = max3$par[2], z = max3$value)
-    # max4.data <- data.frame(x = max4$par[1], y = max4$par[2], z = max4$value)
     all.max <- rbind(all.max, max1.data)
-    # all.max <- rbind(all.max, max2.data)
-    # all.max <- rbind(all.max, max3.data)
-    # all.max <- rbind(all.max, max4.data) 
   }
 }
 
@@ -66,8 +58,37 @@ for (i in -120:120) {
 persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
 points3d(x = all.max$x, y = all.max$y, z = all.max$z, col = "red")
 
-# Max value
-order(all.max$z, decreasing = TRUE)
-points3d(x = all.max[395, ][[1]], y = all.max[395, ][[2]], z = all.max[395, ][[3]], col = "green")
+# Seperating into unique values
+all.max.round <- round(all.max)
+all.max.unique <- unique(all.max.round)
+all.max.unique <- all.max.unique[all.max.unique$z != 0, ] 
 
-# 
+# Quick loop to get rid of all values that are even slightly close together
+all.max.filtered <- data.frame(x = numeric(), y = numeric(), z = numeric())
+for (i in 1:length(all.max.unique$z)) {
+  val <- all.equal(all.max.unique$x[i], all.max.unique$x[(i+1)], tolerance = 2)
+  val1 <- all.equal(all.max.unique$y[i], all.max.unique$y[(i+1)], tolerance = 2)
+  val2 <- all.equal(all.max.unique$z[i], all.max.unique$z[(i+1)], tolerance = 2)
+  if(isTRUE(val) & isTRUE(val1) & isTRUE(val2)) {
+    NULL
+  } else {
+    all.max.filtered <- rbind(all.max.filtered, all.max.unique[i, ])
+  }
+}
+
+persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
+points3d(x = all.max.filtered$x, y = all.max.filtered$y, z = all.max.filtered$z, col = "red")
+
+# Max value and then plotting everything
+order(all.max.filtered$z, decreasing = TRUE)
+
+persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
+points3d(x = all.max.filtered[-3, ][[1]], y = all.max.filtered[-3, ][[2]], z = all.max.filtered[-3, ][[3]], col = "red")
+points3d(x = all.max.filtered[3, ][[1]], y = all.max.filtered[3, ][[2]], z = all.max.filtered[3, ][[3]], col = "green")
+
+# Final answer!
+# Number of local maxima
+length(all.max.unique)
+
+# Global maximum
+all.max.unique[7, ]
