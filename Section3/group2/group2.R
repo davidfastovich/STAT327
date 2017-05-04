@@ -45,19 +45,21 @@ points3d(x = max2$par[1], y = max2$par[2], z = max2$value, col = "red")
 
 # Loop to test all possible parameter combinations based on the grid I made eariler and then bind it to one data frame
 all.max <- data.frame(x = numeric(), y = numeric(), z = numeric())
-for (i in 1:120) {
-  max1 <- optim(par = c(i, i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-  max2 <- optim(par = c(i, -i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-  max3 <- optim(par = c(-i, i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-  max4 <- optim(par = c(-i, -i), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
-  max1.data <- data.frame(x = max1$par[1], y = max1$par[2], z = max1$value)
-  max2.data <- data.frame(x = max2$par[1], y = max2$par[2], z = max2$value)
-  max3.data <- data.frame(x = max3$par[1], y = max3$par[2], z = max3$value)
-  max4.data <- data.frame(x = max4$par[1], y = max4$par[2], z = max4$value)
-  all.max <- rbind(all.max, max1.data)
-  all.max <- rbind(all.max, max2.data)
-  all.max <- rbind(all.max, max3.data)
-  all.max <- rbind(all.max, max4.data)
+for (i in -120:120) {
+  for (j in -120:120) {
+    max1 <- optim(par = c(i, j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+    # max2 <- optim(par = c(i, -j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+    # max3 <- optim(par = c(-i, j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+    # max4 <- optim(par = c(-i, -j), fn = f, k = 120, method = "Nelder-Mead", control=list(fnscale=-1))
+    max1.data <- data.frame(x = max1$par[1], y = max1$par[2], z = max1$value)
+    # max2.data <- data.frame(x = max2$par[1], y = max2$par[2], z = max2$value)
+    # max3.data <- data.frame(x = max3$par[1], y = max3$par[2], z = max3$value)
+    # max4.data <- data.frame(x = max4$par[1], y = max4$par[2], z = max4$value)
+    all.max <- rbind(all.max, max1.data)
+    # all.max <- rbind(all.max, max2.data)
+    # all.max <- rbind(all.max, max3.data)
+    # all.max <- rbind(all.max, max4.data) 
+  }
 }
 
 # Plotting all results
