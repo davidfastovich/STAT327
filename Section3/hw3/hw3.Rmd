@@ -139,4 +139,6 @@ mad.edge.array <- array(data = c(red.mad, green.mad, blue.mad), dim = c(dim(mad)
 writePNG(mad.edge.array, "edgemad.png")
 ```
 
+**Roads are emphasized in the Madison image after edge detection. This is likely a result of roads being mainly one color and often being bordered by something that's a different color, like a tree which is green.**
+
 ![alt text](edgemad.png)
