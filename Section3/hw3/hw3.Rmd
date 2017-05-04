@@ -1,29 +1,21 @@
 Name: David Fastovich
 Email: fastovich@wisc.edu
 
-Loading required packages
+Loading required packages and reading data to be processed later
 ```{r}
 require("png")
 require("parallel")
 
-str(vg <- readPNG("Van_Gogh.png"))
-dim(vg)
+vg <- readPNG("Van_Gogh.png")
 
 red.vg <- vg[,,1]
 green.vg <- vg[,,2]
 blue.vg <- vg[,,3]
-str(blue.vg)
-
-layout(matrix(1:3, ncol=3))
-image(t(red.vg[nrow(red.vg):1,]), col = gray((1:12)/13), main="Red channel")
-image(t(green.vg[nrow(green.vg):1,]), col = gray((1:12)/13), main="Green channel")
-image(t(blue.vg[nrow(blue.vg):1,]), col = gray((1:12)/13), main="Blue channel")
 ```
 
 Filtering function
 ```{r}
 par.chan.filtering <- function(x, k, dim.x) {
-  # dim.x <- dim(x)
   pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
   filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
@@ -40,17 +32,12 @@ par.chan.filtering <- function(x, k, dim.x) {
 
 Have to make one function that can be applied in parallel
 ```{r}
-filter.image <- function(x, k) {
-  # require(png)
-  # filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim(x)[1],dim(x)[2],dim(x)[3]))
-  # filtered
-  # for (i in 1:3) {
-    # filtered.array[,,i] <- par.chan.filtering(vg[,,i], k = k)
-  # }
-  # filename <- paste(sep = "", "fastovich_", k, ".png")
-  # print(filename)
-  # return(writePNG(filtered.array, filename))
-  return(par.chan.filtering(x, k = k))
+filter.image <- function(x, k, dim.x) {
+  filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim.x[1],dim.x[2],dim.x[3]))
+  for (i in 1:3) {
+    filtered.array[,,i] <- par.chan.filtering(vg[,,i][1], k = k, dim.x = dim(vg[,,i]))
+  }
+  return(filtered.array)
 }
   
 ```
@@ -59,9 +46,9 @@ Implementing function on Madison.png using 3 cores
 ```{r}
 n.cores <- detectCores()
 cluster <- makePSOCKcluster(names=n.cores)
-clusterEvalQ(cl = cluster)
-clusterMap(cl = cluster, fun = filter.image, )
-lapply(red.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(red.vg))
-lapply(green.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(green.vg))
-lapply(blue.vg[1], FUN = par.chan.filtering, k = 5, dim.x = dim(blue.vg))
+clusterEvalQ(cl = cluster, expr = par.chan.filtering)
+red.filtered <-  parLapply(cl = cluster, red.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(red.vg))
+green.filtered <-  parLapply(cl = cluster, x = green.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(green.vg))
+system.time(blue.filtered <-  parLapply(cl = cluster, blue.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(blue.vg)))
+system.time(filtered.array <- parLapply(cl = cluster, vg[1], fun = filter.image, k = 1, dim.x = dim(vg)))
 ```
