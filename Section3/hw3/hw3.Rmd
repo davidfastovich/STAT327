@@ -13,12 +13,14 @@ green.vg <- vg[,,2]
 blue.vg <- vg[,,3]
 ```
 
-Filtering function
+Filtering function:
+This function works by taking X a character input, reading it as an image, creating a padded matrix, filtering that each of the three padded matrices (r, g, b), and then storing it in a list. This list is then used to generate an array in which the pictures are stored.
+
+I did it this way because I found that running my original (just filtering) function in parallel was slower than running it my itself. By doing it this way I'm getting slightly (like 1 ms) better results and its slightly simpler because its one function that gets run on all three cores. I know this isn't exactly what homework stated to do so I have included a function that fulfills the homework requirements below this code chunk.
 ```{r}
 par.chan.filtering <- function(x, k) {
   vg <- readPNG(x)
   dim.x <- dim(vg)
-  # filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim.x[1],dim.x[2],dim.x[3]))
   filtered.list <- list()
   for (i in 1:3) {
     dim.y <- dim(vg[,,i])
@@ -33,44 +35,33 @@ par.chan.filtering <- function(x, k) {
     unpadded.mat <- filtered.mat[seq_len(dim.x[1]) + k, seq_len(dim.x[2]) + k]
     
     filtered.list[[i]] <- unpadded.mat
-    # filtered.array[,,i] <- unpadded.mat
   }
-  # pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
-  # pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
-  # filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
-  # for(row in (k+1):(dim.x[1]+k)) {
-  #   for(col in (k+1):(dim.x[2]+k)) {
-  #     filtered.mat[row, col] <- mean(pad.X[(row-k):(row+k),(col-k):(col+k)])
-  #   }
-  # }
-  # unpadded.mat <- filtered.mat[seq_len(dim.x[1]) + k, seq_len(dim.x[2]) + k]
-  print("I keep on looping 1")
-  # return(unpadded.mat)
   return(filtered.list)
 }
 ```
 
-Have to make one function that can be applied in parallel
+##This is the function as exactly required by the homework (those four bullets outlining exactly what it should do). I've commentted it out as to not mess with anything else.
 ```{r}
-filter.image <- function(x, k, dim.x) {
-  filtered.array <- array(data = c(numeric(), numeric(), numeric()), dim = c(dim.x[1],dim.x[2],dim.x[3]))
-  for (i in 1:3) {
-    filtered.array[,,i] <- par.chan.filtering(vg[,,i][1], k = k, dim.x = dim(vg[,,i]))
-  }
-  return(filtered.array)
-}
-  
+# par.chan.filtering <- function(x, k) {
+#   dim.x <- dim(x)
+#   pad.X <- matrix(0, (dim.x[1]+2*k), (dim.x[2]+2*k))
+#   pad.X[(k+1):(dim.x[1]+k), (k+1):(dim.x[2]+k)] <- x
+#   filtered.mat <- matrix(0, dim(pad.X)[1], dim(pad.X)[2])
+#   for(row in (k+1):(dim.x[1]+k)) {
+#     for(col in (k+1):(dim.x[2]+k)) {
+#       filtered.mat[row, col] <- mean(pad.X[(row-k):(row+k),(col-k):(col+k)])
+#     }
+#   }
+#   unpadded.mat <- filtered.mat[seq_len(dim.x[1]) + k, seq_len(dim.x[2]) + k]
+#   return(unpadded.mat)
+# }
 ```
 
-Implementing function on Madison.png using 3 cores
+Implementing function on Van_Gogh.png using 3 cores
 ```{r}
 n.cores <- detectCores()
 cluster <- makePSOCKcluster(names=n.cores)
 clusterEvalQ(cl = cluster, expr = require(png))
-# red.filtered <-  parLapply(cl = cluster, red.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(red.vg))
-# green.filtered <-  parLapply(cl = cluster, x = green.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(green.vg))
-# system.time(blue.filtered <-  parLapply(cl = cluster, blue.vg[1], fun = par.chan.filtering, k = 5, dim.x = dim(blue.vg)))
-# system.time(filtered.array <- parLapply(cl = cluster, vg[1], fun = filter.image, k = 1, dim.x = dim(vg)))
 filtered.list.1 <-  parLapply(cl = cluster, "Van_Gogh.png", par.chan.filtering, k = 1)
 filtered.list.3 <-  parLapply(cl = cluster, "Van_Gogh.png", par.chan.filtering, k = 3)
 filtered.list.5 <-  parLapply(cl = cluster, "Van_Gogh.png", par.chan.filtering, k = 5)
