@@ -1,3 +1,11 @@
+# Group members:
+# David Fastovich / fastovich@wisc.edu
+# Dongyue ying / dying6@wisc.edu
+# Yuke Xiang / yxiang23@wisc.edu
+# Sam Waterbury / waterbury@wisc.edu
+# Youmi Suk / ysuk@wisc.edu
+# Liaoyuan Jing / ljing5@wisc.edu
+
 rm(list = ls())
 
 # Required packages for script to work
@@ -63,32 +71,16 @@ all.max.round <- round(all.max)
 all.max.unique <- unique(all.max.round)
 all.max.unique <- all.max.unique[all.max.unique$z != 0, ] 
 
-# Quick loop to get rid of all values that are even slightly close together
-all.max.filtered <- data.frame(x = numeric(), y = numeric(), z = numeric())
-for (i in 1:length(all.max.unique$z)) {
-  val <- all.equal(all.max.unique$x[i], all.max.unique$x[(i+1)], tolerance = 2)
-  val1 <- all.equal(all.max.unique$y[i], all.max.unique$y[(i+1)], tolerance = 2)
-  val2 <- all.equal(all.max.unique$z[i], all.max.unique$z[(i+1)], tolerance = 2)
-  if(isTRUE(val) & isTRUE(val1) & isTRUE(val2)) {
-    NULL
-  } else {
-    all.max.filtered <- rbind(all.max.filtered, all.max.unique[i, ])
-  }
-}
-
-persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
-points3d(x = all.max.filtered$x, y = all.max.filtered$y, z = all.max.filtered$z, col = "red")
-
 # Max value and then plotting everything
-order(all.max.filtered$z, decreasing = TRUE)
+order(all.max.unique$z, decreasing = TRUE)
 
 persp3d(x = grid.x, y = grid.y, z = z, col = "light blue")
-points3d(x = all.max.filtered[-3, ][[1]], y = all.max.filtered[-3, ][[2]], z = all.max.filtered[-3, ][[3]], col = "red")
-points3d(x = all.max.filtered[3, ][[1]], y = all.max.filtered[3, ][[2]], z = all.max.filtered[3, ][[3]], col = "green")
+points3d(x = all.max.unique[-7, ][[1]], y = all.max.unique[-7, ][[2]], z = all.max.unique[-7, ][[3]], col = "red")
+points3d(x = all.max.unique[7, ][[1]], y = all.max.unique[7, ][[2]], z = all.max.unique[7, ][[3]], col = "green")
 
 # Final answer!
 # Number of local maxima
-length(all.max.unique)
+length(all.max.unique$z)
 
 # Global maximum
 all.max.unique[7, ]
